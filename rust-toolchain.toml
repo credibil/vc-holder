@@ -1,0 +1,17 @@
+[toolchain]
+# channel = "stable"
+# channel = "beta"
+channel = "nightly"
+# channel = "nightly-2025-01-25"
+components = ["clippy", "rust-src", "rustfmt"]
+targets = [
+  "aarch64-apple-darwin",
+  "x86_64-apple-darwin",
+  "wasm32-wasip2",
+  "aarch64-apple-ios",
+  "aarch64-apple-ios-sim",
+  "aarch64-linux-android",
+  "wasm32-unknown-unknown",
+  "x86_64-apple-ios"
+]
+profile = "minimal"

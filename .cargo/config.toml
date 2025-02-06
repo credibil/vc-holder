@@ -1,0 +1,8 @@
+[build]
+
+[target.x86_64-apple-darwin]
+# needed for github actions
+
+[alias]
+xcode = ["bin", "cargo-xcode"]
+uniffi-bindgen = "run --bin uniffi-bindgen generate"
