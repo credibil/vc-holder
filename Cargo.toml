@@ -1,6 +1,51 @@
 [package]
-name = "vc-holder"
-version = "0.1.0"
-edition = "2024"
+name = "holder"
+description = "Verifiable Credential holder agent SDK"
+readme = "README.md"
+authors.workspace = true
+categories.workspace = true
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[lints]
+workspace = true
 
 [dependencies]
+anyhow.workspace = true
+
+[dev-dependencies]
+
+[workspace]
+members = []
+resolver = "2"
+
+[workspace.package]
+authors = ["Credibil"]
+categories = ["data", "messaging", "didcomm", "identity", "verifiable"]
+edition = "2024"
+exclude = [".*", "/docs", "snapshots/"]
+homepage = "https://credibil.io"
+keywords = ["credentials", "decentralized", "identity", "openid", "verifiable"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/credibil/dwn"
+rust-version = "1.85"
+version = "0.1.0-alpha.1"
+
+[workspace.lints.rust]
+missing_docs = "warn"
+unused_extern_crates = "warn"
+
+[workspace.lints.clippy]
+all = "warn"
+pedantic = "warn"
+nursery = "warn"
+
+[workspace.dependencies]
+anyhow = "1.0.95"
