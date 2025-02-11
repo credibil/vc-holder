@@ -18,6 +18,10 @@ workspace = true
 
 [dependencies]
 anyhow.workspace = true
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+vercre-verifier.workspace = true
 
 [dev-dependencies]
 
@@ -49,3 +53,7 @@ nursery = "warn"
 
 [workspace.dependencies]
 anyhow = "1.0.95"
+chrono = { version = "0.4.39", features = ["serde"] }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { version = "1.0.138", features = ["alloc"] }
+vercre-verifier = { git = "https://github.com/credibil/vc.git" }
