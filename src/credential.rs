@@ -6,11 +6,12 @@
 use std::collections::HashMap;
 
 use chrono::{DateTime, Utc};
+use credibil_vc::dif_exch::Claims;
+use credibil_vc::issuer::Claim;
+use credibil_vc::openid::issuer::CredentialDisplay;
+use credibil_vc::w3c_vc::model::CredentialSubject;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
-use vercre_issuer::Claim;
-use vercre_openid::issuer::CredentialDisplay;
-use vercre_w3c_vc::model::CredentialSubject;
 
 /// A set of claims for a subject (holder).
 ///
@@ -171,25 +172,34 @@ impl Credential {
                             )
                         });
                         match locale_display {
-                            Some(display) => claim_set
-                                .push((prefix.to_owned() + &display.name, claim.to_string().replace('"', ""))),
-                            None => claim_set
-                                .push((prefix.to_owned() + &title_case(name), claim.to_string().replace('"', ""))),
+                            Some(display) => claim_set.push((
+                                prefix.to_owned() + &display.name,
+                                claim.to_string().replace('"', ""),
+                            )),
+                            None => claim_set.push((
+                                prefix.to_owned() + &title_case(name),
+                                claim.to_string().replace('"', ""),
+                            )),
                         }
                     } else {
                         // This shouldn't happen: if the claim definition is a Set (nested claim),
                         // then the claim should be an object. To be safe, we just use the claim
                         // name.
-                        claim_set.push((prefix.to_owned() + &title_case(name), claim.to_string().replace('"', "")));
+                        claim_set.push((
+                            prefix.to_owned() + &title_case(name),
+                            claim.to_string().replace('"', ""),
+                        ));
                     }
                 } else {
-                    claim_set.push((prefix.to_owned() + &title_case(name), claim.to_string().replace('"', "")));
+                    claim_set.push((
+                        prefix.to_owned() + &title_case(name),
+                        claim.to_string().replace('"', ""),
+                    ));
                 }
             }
         }
     }
 }
-
 
 /// Image information for a credential.
 #[derive(Clone, Default, Debug, Serialize, Deserialize, PartialEq, Eq)]

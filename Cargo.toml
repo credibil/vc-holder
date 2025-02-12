@@ -1,14 +1,14 @@
 [package]
-name = "holder"
-description = "Verifiable Credential holder agent SDK"
-readme = "README.md"
 authors.workspace = true
 categories.workspace = true
+description = "Verifiable Credential and other data holder agent SDK"
 edition.workspace = true
 exclude.workspace = true
 homepage.workspace = true
 keywords.workspace = true
 license.workspace = true
+name = "credibil-holder"
+readme = "README.md"
 repository.workspace = true
 rust-version.workspace = true
 version.workspace = true
@@ -19,14 +19,20 @@ workspace = true
 [dependencies]
 anyhow.workspace = true
 chrono.workspace = true
+credibil-did = "0.1.0"
+credibil-infosec = "0.1.0"
+credibil-vc.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-vercre-verifier.workspace = true
+uuid = "1.13.1"
 
 [dev-dependencies]
+insta.workspace = true
 
 [workspace]
-members = []
+members = [
+  "examples/tauri-wallet/src-tauri",
+]
 resolver = "2"
 
 [workspace.package]
@@ -48,12 +54,15 @@ unused_extern_crates = "warn"
 
 [workspace.lints.clippy]
 all = "warn"
-pedantic = "warn"
 nursery = "warn"
+pedantic = "warn"
 
 [workspace.dependencies]
 anyhow = "1.0.95"
-chrono = { version = "0.4.39", features = ["serde"] }
-serde = { version = "1.0.217", features = ["derive"] }
-serde_json = { version = "1.0.138", features = ["alloc"] }
-vercre-verifier = { git = "https://github.com/credibil/vc.git" }
+base64ct = {version = "1.6.0", features = ["std"]}
+chrono = {version = "0.4.39", features = ["serde"]}
+credibil-holder = {path = "."}
+credibil-vc = {git = "https://github.com/credibil/vc.git", features = ["issuer", "verifier"]}
+insta = { version = "1.42.1", features = ["redactions", "yaml"] }
+serde = {version = "1.0.217", features = ["derive"]}
+serde_json = {version = "1.0.138", features = ["alloc"]}

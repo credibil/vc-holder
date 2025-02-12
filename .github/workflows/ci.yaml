@@ -39,6 +39,7 @@ jobs:
       - run: |
           sudo apt-get update
           sudo apt-get -y install libwebkit2gtk-4.1-dev
+          mkdir examples/tauri-wallet/dist
       
       - run: cargo nextest run
 
@@ -52,6 +53,7 @@ jobs:
       - run: |
           sudo apt-get update
           sudo apt-get -y install libwebkit2gtk-4.1-dev
+          mkdir examples/tauri-wallet/dist
 
       - run: cargo test --doc
 
@@ -122,6 +124,7 @@ jobs:
       - run: |
           sudo apt-get update
           sudo apt-get -y install libwebkit2gtk-4.1-dev
+          mkdir examples/tauri-wallet/dist
 
       - run: cargo clippy
 
@@ -151,6 +154,7 @@ jobs:
   #     - run: |
   #         sudo apt-get update
   #         sudo apt-get -y install libwebkit2gtk-4.1-dev
+  #        mkdir examples/tauri-wallet/dist
 
   #     # - run: cargo outdated --packages credibil-holder
   #     - run: cargo outdated --workspace --exit-code 1

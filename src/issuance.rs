@@ -7,19 +7,18 @@ use std::fmt::Debug;
 
 use anyhow::bail;
 use chrono::DateTime;
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
-use vercre_core::{pkce, Kind, Quota};
-use vercre_issuer::{
+use credibil_vc::core::{Kind, Quota, pkce};
+use credibil_vc::issuer::{
     AuthorizationDetail, AuthorizationRequest, Claim, CredentialAuthorization,
     CredentialConfiguration, CredentialDefinition, CredentialIssuance, CredentialOffer,
     CredentialRequest, DeferredCredentialRequest, Format, GrantType, PreAuthorizedCodeGrant,
     ProfileClaims, Proof, ProofClaims, RequestObject, SingleProof, TokenGrantType, TokenRequest,
     TokenResponse,
 };
-use vercre_macros::credential_request;
-use vercre_openid::issuer::{Issuer, Server};
-use vercre_w3c_vc::model::VerifiableCredential;
+use credibil_vc::openid::issuer::{Issuer, Server};
+use credibil_vc::w3c_vc::model::VerifiableCredential;
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use crate::credential::{Credential, ImageData};
 
@@ -526,11 +525,11 @@ impl<O, P> IssuanceFlow<O, P, Accepted, WithToken> {
     pub fn get_token(&self) -> TokenResponse {
         self.token.0.clone()
     }
-    
+
     /// Create a set of credential requests from the current state for the
     /// given set of credential identifiers (allows the user to select a
     /// subset of accepted credentials) and a proof JWT.
-    /// 
+    ///
     /// The tuple returned is the credential configuration ID and the associated
     /// credential request.
     ///
@@ -568,15 +567,17 @@ impl<O, P> IssuanceFlow<O, P, Accepted, WithToken> {
                 }
                 let credential_issuer = self.issuer.credential_issuer.clone();
                 let access_token = &self.token.0.access_token.clone();
-                let request = credential_request!({
-                    "credential_issuer": credential_issuer,
-                    "access_token": access_token,
-                    "credential_identifier": cred_id.to_string(),
-                    "proof": {
-                        "proof_type": "jwt",
-                        "jwt": jwt.to_string()
-                    }
-                });
+                let request = CredentialRequest {
+                    credential_issuer,
+                    access_token,
+                    credential: CredentialIssuance::Identifier {
+                        credential_identifier: cred_id.to_string(),
+                    },
+                    proof: Some(Proof::Single {
+                        proof_type: SingleProof::Jwt { jwt: jwt.to_string() },
+                    }),
+                    ..Default::default()
+                };
                 requests.push((cfg_id.to_string(), request));
             }
         }
