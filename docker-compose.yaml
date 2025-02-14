@@ -1,0 +1,19 @@
+services:
+  vcservice:
+    image: vcservice:latest
+    container_name: vcservice
+    env_file: .env
+    build:
+      context: ./examples/vcservice
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+  vcweb:
+    image: vcweb:latest
+    container_name: vcweb
+    build:
+      context: ./examples/vcweb
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
