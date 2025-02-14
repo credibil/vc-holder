@@ -1,7 +1,7 @@
+use credibil_holder::presentation::{RequestObjectResponse, ResponseRequest, ResponseResponse};
+use credibil_holder::provider::Verifier;
 use http::header::{ACCEPT, CONTENT_TYPE};
 use tauri_plugin_http::reqwest;
-use vercre_holder::provider::Verifier;
-use vercre_holder::{RequestObjectResponse, ResponseRequest, ResponseResponse};
 
 use super::Provider;
 

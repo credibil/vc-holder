@@ -4,19 +4,21 @@ mod provider;
 use std::collections::HashMap;
 
 use chrono::Utc;
+use credibil_holder::credential::Credential;
+use credibil_holder::issuance::{
+    Claim, ClaimDefinition, CredentialSubject, Display, ValueType, VerifiableCredential,
+};
+use credibil_holder::presentation::proof::{self, Payload, W3cFormat};
+use credibil_holder::presentation::{
+    Constraints, Field, Filter, FilterValue, InputDescriptor, NotAuthorized, PresentationFlow,
+    parse_request_object_response,
+};
+use credibil_holder::provider::{CredentialStorer, Signer, Verifier};
+use credibil_holder::test_utils::verifier::{self, VERIFIER_ID};
+use credibil_holder::{Kind, Quota};
+use credibil_vc::verifier::{CreateRequestRequest, DeviceFlow};
 use insta::assert_yaml_snapshot;
 use serde_json::Map;
-use test_utils::verifier::{self, VERIFIER_ID};
-use vercre_core::{Kind, Quota};
-use vercre_dif_exch::{Constraints, Field, Filter, FilterValue, InputDescriptor};
-use vercre_holder::credential::Credential;
-use vercre_holder::presentation::{parse_request_object_response, NotAuthorized, PresentationFlow};
-use vercre_holder::provider::{CredentialStorer, Signer, Verifier};
-use vercre_issuer::{Claim, ClaimDefinition};
-use vercre_openid::issuer::{Display, ValueType};
-use vercre_openid::verifier::{CreateRequestRequest, DeviceFlow};
-use vercre_w3c_vc::model::{CredentialSubject, VerifiableCredential};
-use vercre_w3c_vc::proof::{self, Payload, W3cFormat};
 
 use crate::provider as holder;
 
@@ -110,8 +112,8 @@ async fn sample_credential() -> Credential {
 
     Credential {
         id: vc.id.clone().expect("should have id"),
-        issuer: "https://vercre.io".into(),
-        issuer_name: "Vercre".into(),
+        issuer: "https://credibil.io".into(),
+        issuer_name: "Credibil".into(),
         type_,
         format: "jwt_vc_json".into(),
         subject_claims,
@@ -139,7 +141,7 @@ async fn presentation_uri() {
     // ask a verifer for a request; the verifier presents a presentation request
     // to the wallet.
     let request_request = setup_create_request();
-    let init_request = vercre_verifier::create_request(verifier_provider, &request_request)
+    let init_request = credibil_vc::verifier::create_request(verifier_provider, &request_request)
         .await
         .expect("should get request");
 
@@ -235,7 +237,7 @@ async fn presentation_obj() {
     // to the wallet.
     let mut request_request = setup_create_request();
     request_request.device_flow = DeviceFlow::SameDevice;
-    let init_request = vercre_verifier::create_request(verifier_provider, &request_request)
+    let init_request = credibil_vc::verifier::create_request(verifier_provider, &request_request)
         .await
         .expect("should get request");
 

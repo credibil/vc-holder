@@ -2,10 +2,10 @@
 
 use std::collections::HashMap;
 
+use credibil_holder::credential::{self, Credential};
+use credibil_holder::issuance::CredentialConfiguration;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
-use vercre_holder::credential::{self, Credential};
-use vercre_holder::CredentialConfiguration;
 
 /// View model for the credential sub-app
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

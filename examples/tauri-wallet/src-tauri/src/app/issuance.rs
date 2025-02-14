@@ -1,18 +1,18 @@
 //! Application state implementation for issuance operations.
 
 use anyhow::bail;
-use test_utils::issuer::NORMAL_USER;
-use vercre_holder::issuance::{
-    Accepted, IssuanceFlow, NotAccepted, PreAuthorized, WithOffer, WithToken, WithoutToken,
+use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::issuance::proof::{Payload, Type, Verify};
+use credibil_holder::issuance::{
+    Accepted, CredentialOffer, CredentialResponseType, IssuanceFlow, MetadataRequest, NotAccepted,
+    PreAuthorized, WithOffer, WithToken, WithoutToken,
 };
-use vercre_holder::jose::JwsBuilder;
-use vercre_holder::proof::{Payload, Type, Verify};
-use vercre_holder::provider::{CredentialStorer, Issuer};
-use vercre_holder::{CredentialOffer, CredentialResponseType, MetadataRequest};
+use credibil_holder::provider::{CredentialStorer, Issuer};
+use credibil_holder::test_utils::issuer::NORMAL_USER;
 
 use super::{AppState, SubApp};
-use crate::provider::Provider;
 use crate::CLIENT_ID;
+use crate::provider::Provider;
 
 /// Issuance flow state.
 #[derive(Clone, Debug, Default)]
@@ -140,11 +140,12 @@ impl AppState {
         match credential_response.response {
             CredentialResponseType::Credential(vc_kind) => {
                 // Single credential in response.
-                let Payload::Vc { vc, issued_at } =
-                    vercre_holder::proof::verify(Verify::Vc(&vc_kind), provider.clone())
-                        .await
-                        .expect("should parse credential")
-                else {
+                let Payload::Vc { vc, issued_at } = credibil_holder::issuance::proof::verify(
+                    Verify::Vc(&vc_kind),
+                    provider.clone(),
+                )
+                .await
+                .expect("should parse credential") else {
                     panic!("expected Payload::Vc");
                 };
                 state.add_credential(&vc, &vc_kind, &issued_at, &request.0, None, None)?;
@@ -152,11 +153,12 @@ impl AppState {
             CredentialResponseType::Credentials(creds) => {
                 // Multiple credentials in response.
                 for vc_kind in creds {
-                    let Payload::Vc { vc, issued_at } =
-                        vercre_holder::proof::verify(Verify::Vc(&vc_kind), provider.clone())
-                            .await
-                            .expect("should parse credential")
-                    else {
+                    let Payload::Vc { vc, issued_at } = credibil_holder::issuance::proof::verify(
+                        Verify::Vc(&vc_kind),
+                        provider.clone(),
+                    )
+                    .await
+                    .expect("should parse credential") else {
                         panic!("expected Payload::Vc");
                     };
                     state.add_credential(&vc, &vc_kind, &issued_at, &request.0, None, None)?;

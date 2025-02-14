@@ -7,18 +7,17 @@
 
 use std::future::Future;
 
-pub use vercre_did::{DidResolver, Document};
-pub use vercre_dif_exch::Constraints;
-pub use vercre_infosec::jose::jwk::PublicKeyJwk;
-pub use vercre_infosec::{Algorithm, Signer};
-pub use vercre_issuer::{
+pub use credibil_vc::did::{DidResolver, Document};
+pub use credibil_vc::infosec::{Algorithm, PublicKeyJwk, Signer};
+pub use credibil_vc::issuer::{
     AuthorizationRequest, AuthorizationResponse, CredentialRequest, CredentialResponse,
     DeferredCredentialRequest, DeferredCredentialResponse, MetadataRequest, MetadataResponse,
     NotificationRequest, NotificationResponse, OAuthServerRequest, OAuthServerResponse,
     TokenRequest, TokenResponse, TxCode,
 };
-pub use vercre_openid::provider::{Result, StateStore};
-use vercre_openid::verifier::{RequestObjectResponse, ResponseRequest, ResponseResponse};
+pub use credibil_vc::provider::{Result, StateStore};
+pub use credibil_vc::verifier::Constraints;
+use credibil_vc::verifier::{RequestObjectResponse, ResponseRequest, ResponseResponse};
 
 use crate::credential::{Credential, ImageData};
 

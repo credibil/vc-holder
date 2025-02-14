@@ -1,9 +1,9 @@
 use std::path::PathBuf;
 
+use credibil_holder::credential::Credential;
+use credibil_holder::presentation::Constraints;
+use credibil_holder::provider::CredentialStorer;
 use tauri_plugin_store::StoreExt;
-use vercre_holder::credential::Credential;
-use vercre_holder::provider::CredentialStorer;
-use vercre_holder::Constraints;
 
 use super::Provider;
 

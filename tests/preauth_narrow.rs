@@ -5,17 +5,16 @@ mod provider;
 
 use std::collections::HashMap;
 
-use insta::assert_yaml_snapshot;
-use test_utils::issuer::{self, CLIENT_ID, CREDENTIAL_ISSUER, NORMAL_USER};
-use vercre_holder::issuance::{
-    AuthorizationSpec, IssuanceFlow, NotAccepted, PreAuthorized, WithOffer, WithoutToken,
+use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::issuance::proof::{self, Payload, Type, Verify};
+use credibil_holder::issuance::{
+    AuthorizationSpec, Claim, CredentialResponseType, IssuanceFlow, NotAccepted, OfferType,
+    PreAuthorized, SendType, WithOffer, WithoutToken,
 };
-use vercre_holder::jose::JwsBuilder;
-use vercre_holder::provider::{Issuer, MetadataRequest};
-use vercre_holder::Claim;
-use vercre_issuer::{CredentialResponseType, OfferType, SendType};
-use vercre_macros::create_offer_request;
-use vercre_w3c_vc::proof::{Payload, Type, Verify};
+use credibil_holder::provider::{Issuer, MetadataRequest};
+use credibil_holder::test_utils::issuer::{self, CLIENT_ID, CREDENTIAL_ISSUER, NORMAL_USER};
+use credibil_vc::issuer::{CreateOfferRequest, GrantType};
+use insta::assert_yaml_snapshot;
 
 use crate::provider as holder;
 
@@ -27,17 +26,20 @@ async fn preauth_narrow() {
     // Use the issuance service endpoint to create a sample offer that we can
     // use to start the flow. This is test set-up only - wallets do not ask an
     // issuer for an offer. Usually this code is internal to an issuer service.
-    let request = create_offer_request!({
-        "credential_issuer": CREDENTIAL_ISSUER,
-        "credential_configuration_ids": ["EmployeeID_JWT", "Developer_JWT"],
-        "subject_id": NORMAL_USER,
-        "grant_types": ["urn:ietf:params:oauth:grant-type:pre-authorized_code"],
-        "tx_code_required": false, // We will forgo the use of a PIN for this test.
-        "send_type": SendType::ByVal,
-    });
+    let request = CreateOfferRequest {
+        credential_issuer: CREDENTIAL_ISSUER.to_string(),
+        credential_configuration_ids: vec![
+            "EmployeeID_JWT".to_string(),
+            "Developer_JWT".to_string(),
+        ],
+        subject_id: Some(NORMAL_USER.to_string()),
+        grant_types: Some(vec![GrantType::PreAuthorizedCode]),
+        tx_code_required: false, // We will forgo the use of a PIN for this test.
+        send_type: SendType::ByVal,
+    };
 
     let issuer_provider = issuer::Provider::new();
-    let offer_resp = vercre_issuer::create_offer(issuer_provider.clone(), request)
+    let offer_resp = credibil_vc::issuer::create_offer(issuer_provider.clone(), request)
         .await
         .expect("should get offer");
     let OfferType::Object(offer) = offer_resp.offer_type else {
@@ -132,7 +134,7 @@ async fn preauth_narrow() {
             CredentialResponseType::Credential(vc_kind) => {
                 // Single credential in response.
                 let Payload::Vc { vc, issued_at } =
-                    vercre_w3c_vc::proof::verify(Verify::Vc(&vc_kind), provider.clone())
+                    proof::verify(Verify::Vc(&vc_kind), provider.clone())
                         .await
                         .expect("should parse credential")
                 else {
@@ -146,7 +148,7 @@ async fn preauth_narrow() {
                 // Multiple credentials in response.
                 for vc_kind in creds {
                     let Payload::Vc { vc, issued_at } =
-                        vercre_w3c_vc::proof::verify(Verify::Vc(&vc_kind), provider.clone())
+                        proof::verify(Verify::Vc(&vc_kind), provider.clone())
                             .await
                             .expect("should parse credential")
                     else {

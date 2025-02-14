@@ -2,9 +2,9 @@
 
 use std::collections::HashMap;
 
+use credibil_holder::issuance::TxCode;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
-use vercre_holder::TxCode;
 
 use crate::app::issuance::IssuanceState;
 use crate::view::credential::CredentialDisplay;

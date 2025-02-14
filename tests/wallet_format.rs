@@ -2,16 +2,18 @@
 //! made using a format.
 mod provider;
 
-use insta::assert_yaml_snapshot;
-use test_utils::issuer::{self, CLIENT_ID, CREDENTIAL_ISSUER, NORMAL_USER, REDIRECT_URI};
-use vercre_holder::issuance::{AuthCode, IssuanceFlow, NotAccepted, WithoutOffer, WithoutToken};
-use vercre_holder::jose::JwsBuilder;
-use vercre_holder::provider::{Issuer, MetadataRequest, OAuthServerRequest};
-use vercre_issuer::{
-    AuthorizationDetail, AuthorizationDetailType, CredentialAuthorization, CredentialResponseType,
-    Format, ProfileW3c,
+use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::issuance::proof::{self, Payload, Type, Verify};
+use credibil_holder::issuance::{
+    AuthCode, AuthorizationDetail, AuthorizationDetailType, CredentialAuthorization,
+    CredentialResponseType, Format, IssuanceFlow, NotAccepted, ProfileW3c, WithoutOffer,
+    WithoutToken,
 };
-use vercre_w3c_vc::proof::{Payload, Type, Verify};
+use credibil_holder::provider::{Issuer, MetadataRequest, OAuthServerRequest};
+use credibil_vc::test_utils::issuer::{
+    self, CLIENT_ID, CREDENTIAL_ISSUER, NORMAL_USER, REDIRECT_URI,
+};
+use insta::assert_yaml_snapshot;
 
 use crate::provider as holder;
 
@@ -125,7 +127,7 @@ async fn wallet_format() {
             CredentialResponseType::Credential(vc_kind) => {
                 // Single credential in response.
                 let Payload::Vc { vc, issued_at } =
-                    vercre_w3c_vc::proof::verify(Verify::Vc(&vc_kind), provider.clone())
+                    proof::verify(Verify::Vc(&vc_kind), provider.clone())
                         .await
                         .expect("should parse credential")
                 else {
@@ -139,7 +141,7 @@ async fn wallet_format() {
                 // Multiple credentials in response.
                 for vc_kind in creds {
                     let Payload::Vc { vc, issued_at } =
-                        vercre_w3c_vc::proof::verify(Verify::Vc(&vc_kind), provider.clone())
+                        proof::verify(Verify::Vc(&vc_kind), provider.clone())
                             .await
                             .expect("should parse credential")
                     else {

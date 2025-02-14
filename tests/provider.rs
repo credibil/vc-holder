@@ -5,25 +5,25 @@ use std::str;
 use std::sync::{Arc, Mutex};
 
 use chrono::{DateTime, Utc};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-use test_utils::store::keystore::HolderKeystore;
-use test_utils::store::{resolver, state};
-use test_utils::{issuer, verifier};
-// TODO: remove this import
-use vercre_dif_exch::Constraints;
-use vercre_holder::provider::{
+use credibil_holder::credential::{Credential, ImageData};
+use credibil_holder::issuance::{
+    AuthorizationRequest, AuthorizationResponse, CredentialRequest, CredentialResponse,
+    DeferredCredentialRequest, DeferredCredentialResponse, MetadataRequest, MetadataResponse,
+    NotificationRequest, NotificationResponse, OAuthServerRequest, OAuthServerResponse,
+    TokenRequest, TokenResponse,
+};
+use credibil_holder::presentation::{
+    Constraints, RequestObjectRequest, RequestObjectResponse, ResponseRequest, ResponseResponse,
+};
+use credibil_holder::provider::{
     Algorithm, CredentialStorer, DidResolver, Document, HolderProvider, Issuer, Result, Signer,
     StateStore, Verifier,
 };
-use vercre_holder::credential::{Credential, ImageData};
-use vercre_holder::{
-    AuthorizationRequest, AuthorizationResponse, CredentialRequest, CredentialResponse,
-    DeferredCredentialRequest, DeferredCredentialResponse, MetadataRequest, MetadataResponse,
-    OAuthServerRequest, OAuthServerResponse, RequestObjectRequest, RequestObjectResponse,
-    ResponseRequest, ResponseResponse, TokenRequest, TokenResponse,
-};
-use vercre_issuer::{NotificationRequest, NotificationResponse};
+use credibil_vc::test_utils::store::keystore::HolderKeystore;
+use credibil_vc::test_utils::store::{resolver, state};
+use credibil_vc::test_utils::{issuer, verifier};
+use serde::Serialize;
+use serde::de::DeserializeOwned;
 
 #[derive(Default, Clone, Debug)]
 #[allow(missing_docs)]
@@ -51,36 +51,36 @@ impl HolderProvider for Provider {}
 
 impl Issuer for Provider {
     async fn metadata(&self, req: MetadataRequest) -> anyhow::Result<MetadataResponse> {
-        let response = vercre_issuer::metadata(self.issuer.clone().unwrap(), req).await?;
+        let response = credibil_vc::issuer::metadata(self.issuer.clone().unwrap(), req).await?;
         Ok(response)
     }
 
     async fn oauth_server(&self, req: OAuthServerRequest) -> anyhow::Result<OAuthServerResponse> {
-        let response = vercre_issuer::oauth_server(self.issuer.clone().unwrap(), req).await?;
+        let response = credibil_vc::issuer::oauth_server(self.issuer.clone().unwrap(), req).await?;
         Ok(response)
     }
 
     async fn authorization(
         &self, req: AuthorizationRequest,
     ) -> anyhow::Result<AuthorizationResponse> {
-        let response = vercre_issuer::authorize(self.issuer.clone().unwrap(), req).await?;
+        let response = credibil_vc::issuer::authorize(self.issuer.clone().unwrap(), req).await?;
         Ok(response)
     }
 
     async fn token(&self, req: TokenRequest) -> anyhow::Result<TokenResponse> {
-        let response = vercre_issuer::token(self.issuer.clone().unwrap(), req).await?;
+        let response = credibil_vc::issuer::token(self.issuer.clone().unwrap(), req).await?;
         Ok(response)
     }
 
     async fn credential(&self, req: CredentialRequest) -> anyhow::Result<CredentialResponse> {
-        let response = vercre_issuer::credential(self.issuer.clone().unwrap(), req).await?;
+        let response = credibil_vc::issuer::credential(self.issuer.clone().unwrap(), req).await?;
         Ok(response)
     }
 
     async fn deferred(
         &self, req: DeferredCredentialRequest,
     ) -> anyhow::Result<DeferredCredentialResponse> {
-        let response = vercre_issuer::deferred(self.issuer.clone().unwrap(), req).await?;
+        let response = credibil_vc::issuer::deferred(self.issuer.clone().unwrap(), req).await?;
         Ok(response)
     }
 
@@ -105,13 +105,13 @@ impl Verifier for Provider {
             client_id: parts[2].into(),
             id: parts[0].into(),
         };
-        Ok(vercre_verifier::request_object(self.verifier.clone().unwrap(), &request).await?)
+        Ok(credibil_vc::verifier::request_object(self.verifier.clone().unwrap(), &request).await?)
     }
 
     async fn present(
         &self, _uri: Option<&str>, req: &ResponseRequest,
     ) -> anyhow::Result<ResponseResponse> {
-        Ok(vercre_verifier::response(self.verifier.clone().unwrap(), req).await?)
+        Ok(credibil_vc::verifier::response(self.verifier.clone().unwrap(), req).await?)
     }
 }
 

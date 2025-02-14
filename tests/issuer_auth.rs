@@ -2,14 +2,18 @@
 //! authorization.
 mod provider;
 
+use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::issuance::proof::{self, Payload, Type, Verify};
+use credibil_holder::issuance::{
+    AuthCode, CredentialResponseType, IssuanceFlow, NotAccepted, OfferType, SendType, WithOffer,
+    WithoutToken,
+};
+use credibil_holder::provider::{Issuer, MetadataRequest, OAuthServerRequest};
+use credibil_holder::test_utils::issuer::{
+    self, CLIENT_ID, CREDENTIAL_ISSUER, NORMAL_USER, REDIRECT_URI,
+};
+use credibil_vc::issuer::{CreateOfferRequest, GrantType};
 use insta::assert_yaml_snapshot;
-use test_utils::issuer::{self, CLIENT_ID, CREDENTIAL_ISSUER, NORMAL_USER, REDIRECT_URI};
-use vercre_holder::issuance::{AuthCode, IssuanceFlow, NotAccepted, WithOffer, WithoutToken};
-use vercre_holder::jose::JwsBuilder;
-use vercre_holder::provider::{Issuer, MetadataRequest, OAuthServerRequest};
-use vercre_issuer::{CredentialResponseType, OfferType, SendType};
-use vercre_macros::create_offer_request;
-use vercre_w3c_vc::proof::{Payload, Type, Verify};
 
 use crate::provider as holder;
 
@@ -21,17 +25,17 @@ async fn issuer_auth() {
     // use to start the flow. This is test set-up only - wallets do not ask an
     // issuer for an offer. Usually this code is internal to an issuer service.
     // We include the requirement for a PIN.
-    let request = create_offer_request!({
-        "credential_issuer": CREDENTIAL_ISSUER,
-        "credential_configuration_ids": ["EmployeeID_JWT"],
-        "subject_id": NORMAL_USER,
-        "grant_types": ["authorization_code"],
-        "tx_code_required": false, // Leave out PIN for this test
-        "send_type": SendType::ByVal,
-    });
+    let request = CreateOfferRequest {
+        credential_issuer: CREDENTIAL_ISSUER.to_string(),
+        credential_configuration_ids: vec!["EmployeeID_JWT".to_string()],
+        subject_id: Some(NORMAL_USER.to_string()),
+        grant_types: Some(vec![GrantType::AuthorizationCode]),
+        tx_code_required: true,
+        send_type: SendType::ByVal,
+    };
 
     let issuer_provider = issuer::Provider::new();
-    let offer_resp = vercre_issuer::create_offer(issuer_provider.clone(), request)
+    let offer_resp = credibil_vc::issuer::create_offer(issuer_provider.clone(), request)
         .await
         .expect("should get offer");
     let OfferType::Object(offer) = offer_resp.offer_type else {
@@ -141,7 +145,7 @@ async fn issuer_auth() {
             CredentialResponseType::Credential(vc_kind) => {
                 // Single credential in response.
                 let Payload::Vc { vc, issued_at } =
-                    vercre_w3c_vc::proof::verify(Verify::Vc(&vc_kind), provider.clone())
+                    proof::verify(Verify::Vc(&vc_kind), provider.clone())
                         .await
                         .expect("should parse credential")
                 else {
@@ -155,7 +159,7 @@ async fn issuer_auth() {
                 // Multiple credentials in response.
                 for vc_kind in creds {
                     let Payload::Vc { vc, issued_at } =
-                        vercre_w3c_vc::proof::verify(Verify::Vc(&vc_kind), provider.clone())
+                        proof::verify(Verify::Vc(&vc_kind), provider.clone())
                             .await
                             .expect("should parse credential")
                     else {

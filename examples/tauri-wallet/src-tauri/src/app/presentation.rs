@@ -1,13 +1,12 @@
 //! Application state implementation for presentation operations.
 
 use anyhow::bail;
-use vercre_holder::credential::Credential;
-use vercre_holder::presentation::{
-    parse_request_object_response, Authorized, NotAuthorized, PresentationFlow,
+use credibil_holder::credential::Credential;
+use credibil_holder::presentation::proof::{self, Payload, W3cFormat};
+use credibil_holder::presentation::{
+    Authorized, NotAuthorized, PresentationFlow, parse_request_object_response,
 };
-use vercre_holder::proof::{self, Payload, W3cFormat};
-use vercre_holder::provider::{CredentialStorer, Verifier};
-use vercre_holder::Signer;
+use credibil_holder::provider::{CredentialStorer, Signer, Verifier};
 
 use super::{AppState, SubApp};
 use crate::provider::Provider;
@@ -31,15 +30,15 @@ impl AppState {
     /// Process a presentation request.
     pub async fn request(&mut self, request: &str, provider: Provider) -> anyhow::Result<()> {
         // Need to determine the type of request - URI or URLEncoded request object.
-        let req_obj = if let Some(req) = vercre_holder::presentation::parse_request_object(request)?
-        {
-            req
-        } else {
-            let url = urlencoding::decode(request)?;
-            let pv = provider.clone();
-            let request_object_response = pv.request_object(&url).await?;
-            parse_request_object_response(&request_object_response, pv).await?
-        };
+        let req_obj =
+            if let Some(req) = credibil_holder::presentation::parse_request_object(request)? {
+                req
+            } else {
+                let url = urlencoding::decode(request)?;
+                let pv = provider.clone();
+                let request_object_response = pv.request_object(&url).await?;
+                parse_request_object_response(&request_object_response, pv).await?
+            };
         let flow = PresentationFlow::<NotAuthorized>::new(req_obj)?;
         let filter = flow.filter()?;
         let credentials = provider.find(Some(filter)).await?;

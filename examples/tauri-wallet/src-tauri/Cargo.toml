@@ -1,5 +1,5 @@
 [package]
-name = "wallet"
+name = "tauri-wallet"
 publish = false
 
 authors.workspace = true

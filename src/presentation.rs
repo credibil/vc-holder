@@ -1,23 +1,20 @@
 //! # Presentation
 //!
-//! The Presentation endpoints implement the vercre-holder's credential
-//! presentation flow.
+//! Types needed to implement a credential presentation flow.
 use std::fmt::Debug;
 use std::vec;
 
 use anyhow::{anyhow, bail};
-use credibil_did::DidResolver;
-use credibil_infosec::jose::jws;
-use credibil_vc::core::{Kind, urlencode};
-use credibil_vc::dif_exch::{
-    Constraints, DescriptorMap, FilterValue, PathNested, PresentationSubmission,
+use credibil_vc::did::{DidResolver, Resource, dereference};
+use credibil_vc::infosec::jws;
+pub use credibil_vc::verifier::proof;
+// Re-export types from `credibil-vc` for use in the presentation module.
+pub use credibil_vc::verifier::{
+    Constraints, DescriptorMap, Field, Filter, FilterValue, InputDescriptor, PathNested,
+    PresentationSubmission, RequestObject, RequestObjectRequest, RequestObjectResponse,
+    RequestObjectType, ResponseRequest, ResponseResponse, VerifiablePresentation,
 };
-use credibil_vc::openid::verifier::{
-    RequestObject, RequestObjectResponse, RequestObjectType, ResponseRequest,
-};
-use credibil_vc::verify_key;
-use credibil_vc::w3c_vc::model::VerifiablePresentation;
-use credibil_vc::w3c_vc::proof::Payload;
+use credibil_vc::{Kind, urlencode};
 use uuid::Uuid;
 
 use crate::credential::Credential;
@@ -26,7 +23,7 @@ use crate::credential::Credential;
 /// If the request string can be decoded but appears to be something other than
 /// a `RequestObject`, None is returned.
 ///
-/// Wrapper to the function from `vercre-core`.
+/// Wrapper to the function `credibil_vc::core::urlencode`.
 ///
 /// # Errors
 /// If the string cannot be decoded or appears to be an encoded `RequestObject`
@@ -127,7 +124,7 @@ impl PresentationFlow<Authorized> {
     /// Will return an error if the request object does not contain a
     /// presentation definition object: this is the only currently supported
     /// type.
-    pub fn payload(&self, key_identifier: &str) -> anyhow::Result<Payload> {
+    pub fn payload(&self, key_identifier: &str) -> anyhow::Result<proof::Payload> {
         let holder_did = key_identifier.split('#').collect::<Vec<&str>>()[0];
 
         // presentation with 2 VCs: one as JSON, one as base64url encoded JWT
@@ -157,7 +154,7 @@ impl PresentationFlow<Authorized> {
         }
         let vp = builder.build()?;
 
-        let payload = Payload::Vp {
+        let payload = proof::Payload::Vp {
             vp,
             client_id: self.request.client_id.clone(),
             nonce: self.request.nonce.clone(),
@@ -198,9 +195,20 @@ pub async fn parse_request_object_response(
     let RequestObjectType::Jwt(token) = &res.request_object else {
         bail!("no serialized JWT found in response");
     };
-    let jwt: jws::Jwt<RequestObject> = jws::decode(token, verify_key!(resolver))
-        .await
-        .map_err(|e| anyhow!("failed to parse JWT: {e}"))?;
+    let jwt: jws::Jwt<RequestObject> = jws::decode(token, move |kid| {
+        let local_resolver = resolver.clone();
+        async move {
+            let resp = dereference(&kid, None, local_resolver)
+                .await
+                .map_err(|e| anyhow!("issue dereferencing DID: {e}"))?;
+            let Some(Resource::VerificationMethod(vm)) = resp.content_stream else {
+                return Err(anyhow!("Verification method not found"));
+            };
+            vm.method_type.jwk().map_err(|e| anyhow!("JWK not found: {e}"))
+        }
+    })
+    .await
+    .map_err(|e| anyhow!("failed to parse JWT: {e}"))?;
 
     Ok(jwt.claims)
 }

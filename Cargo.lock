@@ -471,9 +471,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.2.12"
+version = "1.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "755717a7de9ec452bf7f3f1a3099085deabd7f2962b861dae91ecd7a365903d2"
+checksum = "c7777341816418c02e033934a09f20dc0ccaf65a5201ef8a450ae0105a573fda"
 dependencies = [
  "shlex",
 ]
@@ -808,16 +808,15 @@ dependencies = [
 
 [[package]]
 name = "credibil-holder"
-version = "0.1.0-alpha.1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "chrono",
- "credibil-did",
- "credibil-infosec",
  "credibil-vc",
  "insta",
  "serde",
  "serde_json",
+ "tokio",
  "uuid",
 ]
 
@@ -850,7 +849,6 @@ dependencies = [
 [[package]]
 name = "credibil-vc"
 version = "0.1.0"
-source = "git+https://github.com/credibil/vc.git#5b5d4757d994f9263be923eb8e405be99a8a25cd"
 dependencies = [
  "anyhow",
  "base64ct",
@@ -2781,9 +2779,9 @@ checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
 
 [[package]]
 name = "miniz_oxide"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b8402cab7aefae129c6977bb0ff1b8fd9a04eb5b51efc50a70bea51cda0c7924"
+checksum = "b3b1c9bd4fe1f0f8b387f6eb9eb3b4a1aa26185e5750efb9140301703f62cd1b"
 dependencies = [
  "adler2",
  "simd-adler32",
@@ -5189,6 +5187,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "tauri-wallet"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64ct",
+ "chrono",
+ "credibil-holder",
+ "futures",
+ "http",
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-deep-link",
+ "tauri-plugin-http",
+ "tauri-plugin-log",
+ "tauri-plugin-shell",
+ "tauri-plugin-store",
+ "typeshare",
+ "urlencoding",
+]
+
+[[package]]
 name = "tauri-winres"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5802,30 +5824,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "wallet"
-version = "0.1.0-alpha.1"
-dependencies = [
- "anyhow",
- "base64ct",
- "chrono",
- "credibil-holder",
- "futures",
- "http",
- "log",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-deep-link",
- "tauri-plugin-http",
- "tauri-plugin-log",
- "tauri-plugin-shell",
- "tauri-plugin-store",
- "typeshare",
- "urlencoding",
-]
-
-[[package]]
 name = "want"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6081,9 +6079,9 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
 name = "window-vibrancy"
-version = "0.5.2"
+version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ea403deff7b51fff19e261330f71608ff2cdef5721d72b64180bb95be7c4150"
+checksum = "831ad7678290beae36be6f9fad9234139c7f00f3b536347de7745621716be82d"
 dependencies = [
  "objc2",
  "objc2-app-kit",

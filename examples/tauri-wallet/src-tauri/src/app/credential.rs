@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use vercre_holder::provider::CredentialStorer;
+use credibil_holder::provider::CredentialStorer;
 
 use crate::app::issuance::IssuanceState;
 use crate::app::presentation::PresentationState;

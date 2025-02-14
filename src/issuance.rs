@@ -1,22 +1,26 @@
 //! # Issuance
 //!
-//! The Issuance endpoints implement the vercre-holder's credential issuance
-//! flow.
+//! The Issuance types implement the credential issuance flow.
 use std::collections::HashMap;
 use std::fmt::Debug;
 
 use anyhow::bail;
 use chrono::DateTime;
-use credibil_vc::core::{Kind, Quota, pkce};
-use credibil_vc::issuer::{
-    AuthorizationDetail, AuthorizationRequest, Claim, CredentialAuthorization,
-    CredentialConfiguration, CredentialDefinition, CredentialIssuance, CredentialOffer,
-    CredentialRequest, DeferredCredentialRequest, Format, GrantType, PreAuthorizedCodeGrant,
-    ProfileClaims, Proof, ProofClaims, RequestObject, SingleProof, TokenGrantType, TokenRequest,
-    TokenResponse,
+pub use credibil_vc::infosec;
+pub use credibil_vc::issuer::proof;
+/// Re-exports from `credibil_vc` for issuance.
+pub use credibil_vc::issuer::{
+    AuthorizationDetail, AuthorizationDetailType, AuthorizationRequest, AuthorizationResponse,
+    Claim, ClaimDefinition, CredentialAuthorization, CredentialConfiguration, CredentialDefinition,
+    CredentialIssuance, CredentialOffer, CredentialRequest, CredentialResponse,
+    CredentialResponseType, CredentialSubject, DeferredCredentialRequest,
+    DeferredCredentialResponse, Display, Format, GrantType, Issuer, MetadataRequest,
+    MetadataResponse, NotificationRequest, NotificationResponse, OAuthServerRequest,
+    OAuthServerResponse, OfferType, PreAuthorizedCodeGrant, ProfileClaims, ProfileW3c, Proof,
+    ProofClaims, RequestObject, SendType, Server, SingleProof, TokenGrantType, TokenRequest,
+    TokenResponse, TxCode, ValueType, VerifiableCredential, pkce,
 };
-use credibil_vc::openid::issuer::{Issuer, Server};
-use credibil_vc::w3c_vc::model::VerifiableCredential;
+use credibil_vc::{Kind, Quota};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -549,7 +553,7 @@ impl<O, P> IssuanceFlow<O, P, Accepted, WithToken> {
                     ..
                 } => credential_configuration_id,
                 CredentialAuthorization::Format(format_identifier) => {
-                    match &self.issuer.credential_configuration_id(format_identifier) {
+                    match self.issuer.credential_configuration_id(format_identifier) {
                         Ok(cfg_id) => cfg_id,
                         Err(_) => continue,
                     }
@@ -566,7 +570,7 @@ impl<O, P> IssuanceFlow<O, P, Accepted, WithToken> {
                     continue;
                 }
                 let credential_issuer = self.issuer.credential_issuer.clone();
-                let access_token = &self.token.0.access_token.clone();
+                let access_token = self.token.0.access_token.clone().to_string();
                 let request = CredentialRequest {
                     credential_issuer,
                     access_token,

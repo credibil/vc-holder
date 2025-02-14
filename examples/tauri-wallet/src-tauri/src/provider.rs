@@ -9,14 +9,14 @@ use std::sync::Arc;
 
 use anyhow::anyhow;
 use chrono::{DateTime, Utc};
-use futures::lock::Mutex;
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-use test_utils::store::keystore::HolderKeystore;
-use test_utils::store::resolver;
-use vercre_holder::provider::{
+use credibil_holder::provider::{
     Algorithm, DidResolver, Document, HolderProvider, Result, Signer, StateStore,
 };
+use credibil_holder::test_utils::store::keystore::HolderKeystore;
+use credibil_holder::test_utils::store::resolver;
+use futures::lock::Mutex;
+use serde::Serialize;
+use serde::de::DeserializeOwned;
 
 #[derive(Clone, Debug)]
 pub struct Provider {

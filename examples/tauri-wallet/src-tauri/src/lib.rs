@@ -17,8 +17,8 @@ use futures::lock::Mutex;
 use provider::Provider;
 use tauri::{AppHandle, Emitter, Listener, Manager, State};
 use tauri_plugin_log::{Target, TargetKind};
-use view::credential::CredentialDetail;
 use view::ViewModel;
+use view::credential::CredentialDetail;
 
 struct StateModel {
     app_state: Mutex<AppState>,
@@ -196,7 +196,7 @@ async fn pin(
 }
 
 /// The `credentials` command gets the credentials for the accepted issuance
-/// offer using the `credentials` endpoint in the `vercre-holder` crate.
+/// offer using the `credentials` endpoint in the `credibil-holder` crate.
 #[tauri::command]
 async fn credentials(state: State<'_, StateModel>, app: AppHandle) -> Result<(), error::AppError> {
     log::info!("get_credentials invoked");

@@ -8,9 +8,9 @@ mod credential;
 pub mod issuance;
 pub mod presentation;
 
+use credibil_holder::credential::Credential;
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
-use vercre_holder::credential::Credential;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[typeshare]

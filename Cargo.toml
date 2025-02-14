@@ -19,8 +19,6 @@ workspace = true
 [dependencies]
 anyhow.workspace = true
 chrono.workspace = true
-credibil-did = "0.1.0"
-credibil-infosec = "0.1.0"
 credibil-vc.workspace = true
 serde.workspace = true
 serde_json.workspace = true
@@ -28,6 +26,7 @@ uuid = "1.13.1"
 
 [dev-dependencies]
 insta.workspace = true
+tokio = { version = "1.43.0", features = ["rt-multi-thread", "macros"] }
 
 [workspace]
 members = [
@@ -44,9 +43,9 @@ homepage = "https://credibil.io"
 keywords = ["credentials", "decentralized", "identity", "openid", "verifiable"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/credibil/dwn"
+repository = "https://github.com/credibil/holder"
 rust-version = "1.85"
-version = "0.1.0-alpha.1"
+version = "0.1.0"
 
 [workspace.lints.rust]
 missing_docs = "warn"
@@ -62,7 +61,11 @@ anyhow = "1.0.95"
 base64ct = {version = "1.6.0", features = ["std"]}
 chrono = {version = "0.4.39", features = ["serde"]}
 credibil-holder = {path = "."}
-credibil-vc = {git = "https://github.com/credibil/vc.git", features = ["issuer", "verifier"]}
+credibil-vc = {git = "https://github.com/credibil/vc", features = ["issuer", "verifier"]}
 insta = { version = "1.42.1", features = ["redactions", "yaml"] }
 serde = {version = "1.0.217", features = ["derive"]}
 serde_json = {version = "1.0.138", features = ["alloc"]}
+
+
+[patch."https://github.com/credibil/vc"]
+credibil-vc = { path = "../vc" }

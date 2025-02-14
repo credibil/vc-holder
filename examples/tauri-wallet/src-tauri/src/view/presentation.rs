@@ -9,7 +9,7 @@ use crate::app::presentation::PresentationState;
 use crate::view::credential::CredentialDisplay;
 
 /// Status of the presentation flow. This is re-typed instead of using the
-/// status defined by vercre-holder so that we can use typeshare to generate the
+/// status defined by credibil-holder so that we can use typeshare to generate the
 /// equivalent TypeScript enum.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[typeshare]
@@ -26,7 +26,7 @@ pub enum PresentationStatus {
     Authorized,
 }
 
-/// Convert from `vercre_holder::presentation::Status` to `PresentationStatus`
+/// Convert from `credibil_holder::presentation::Status` to `PresentationStatus`
 impl From<PresentationState> for PresentationStatus {
     fn from(status: PresentationState) -> Self {
         match status {

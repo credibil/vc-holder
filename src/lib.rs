@@ -16,17 +16,17 @@
 //!
 //! Similar to other general OpenID implementations, the library is based
 //! around orchestrating flows for VC issuance or presentation (to a verifier).
-//! 
+//!
 //! The client application can interact with types that "remember" the current
 //! state of the flow and provide associated methods to use that state to
 //! prepare requests and then update the state with responses.
-//! 
+//!
 //! A full set of end-to-end tests are provided in the `tests` directory that
 //! demonstrate how to use the library with all the possible variations of VC
 //! issuance supported by the standards as implemented in `credibil-vc`.
-//! 
+//!
 //! At present, the only supported credential data type is the
-//! [W3C Verifiable Credentials Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/). 
+//! [W3C Verifiable Credentials Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/).
 //!
 //! ** Provider **
 //!
@@ -43,7 +43,6 @@
 //! applications for Issuers and Verifiers using `credibil-vc` and that work
 //! in conjunction with the example wallets.
 
-
 // TODO: implement client registration/ client metadata endpoints
 
 // TODO: support [SIOPv2](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html)(https://openid.net/specs/openid-connect-self-issued-v2-1_0.html)
@@ -56,24 +55,4 @@ pub mod issuance;
 pub mod presentation;
 pub mod provider;
 
-// pub use credibil_vc::core::{urlencode, Kind, Quota};
-// pub use credibil_vc::dif_exch::Constraints;
-// pub use credibil_infosec::jose::{self};
-// pub use vercre_infosec::Signer;
-// pub use vercre_openid::issuer::{
-//     AuthorizationCodeGrant, AuthorizationDetail, AuthorizationDetailType, AuthorizationRequest,
-//     AuthorizationResponse, AuthorizedDetail, Claim, ClaimDefinition, CredentialAuthorization,
-//     CredentialConfiguration, CredentialDisplay, CredentialOffer, CredentialRequest,
-//     CredentialResponse, CredentialResponseType, DeferredCredentialRequest,
-//     DeferredCredentialResponse, Format, GrantType, Grants, Image, Issuer, MetadataRequest,
-//     MetadataResponse, NotificationEvent, NotificationRequest, NotificationResponse,
-//     OAuthServerRequest, OAuthServerResponse, PreAuthorizedCodeGrant, ProfileClaims, ProfileW3c,
-//     Proof, ProofClaims, TokenRequest, TokenResponse, TxCode,
-// };
-// pub use vercre_openid::verifier::{
-//     RequestObject, RequestObjectRequest, RequestObjectResponse, RequestObjectType, ResponseRequest,
-//     ResponseResponse,
-// };
-// pub use vercre_w3c_vc::model::VerifiableCredential;
-// pub use vercre_w3c_vc::proof::{self, Type};
-// pub use vercre_w3c_vc::verify_key;
+pub use credibil_vc::{Kind, Quota, test_utils};

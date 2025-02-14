@@ -1,15 +1,14 @@
 //! # Holder Agent (Wallet)
 //!
-//! This module defines types and traits to enable wallets or other holder
-//! agents to interact with the `vercre-holder` endpoints.
+//! This module defines types convenient for credential storage and display.
+//! They do not follow any prescribed standard but where appropriate are
+//! convertible to standard types.
 
 use std::collections::HashMap;
 
 use chrono::{DateTime, Utc};
-use credibil_vc::dif_exch::Claims;
-use credibil_vc::issuer::Claim;
-use credibil_vc::openid::issuer::CredentialDisplay;
-use credibil_vc::w3c_vc::model::CredentialSubject;
+use credibil_vc::issuer::{Claim, CredentialDisplay, CredentialSubject};
+use credibil_vc::verifier::Claims;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
@@ -240,9 +239,9 @@ mod tests {
     #[test]
     fn test_claims_display() {
         let json = serde_json::json!({
-            "id": "http://vercre.io/credentials/EmployeeIDCredential",
-            "issuer": "http://vercre.io",
-            "issuer_name": "Vercre",
+            "id": "http://credibil.io/credentials/EmployeeIDCredential",
+            "issuer": "http://credibil.io",
+            "issuer_name": "Credibil",
             "issued": "2024-11-21T22:35:18Z",
             "type": [
               "EmployeeIDCredential",
@@ -339,14 +338,14 @@ mod tests {
                     "name": "Employee ID",
                     "locale": "en-NZ",
                     "logo": {
-                        "uri": "https://vercre.github.io/assets/employee.png",
-                        "alt_text": "Vercre Logo"
+                        "uri": "https://credibil.io/assets/employee.png",
+                        "alt_text": "Employee ID Logo"
                     },
-                    "description": "Vercre employee ID credential",
+                    "description": "Credibil employee ID credential",
                     "background_color": "#323ed2",
                     "background_image": {
-                        "uri": "https://vercre.github.io/assets/employee-background.png",
-                        "alt_text": "Vercre Background"
+                        "uri": "https://credibil.io/assets/employee-background.png",
+                        "alt_text": "Employee ID Background"
                     },
                     "text_color": "#ffffff",
                 }
