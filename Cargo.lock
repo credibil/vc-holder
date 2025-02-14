@@ -849,6 +849,7 @@ dependencies = [
 [[package]]
 name = "credibil-vc"
 version = "0.1.0"
+source = "git+https://github.com/credibil/vc#f909b7d48e18008a992b9195f8716bcf378c8bcd"
 dependencies = [
  "anyhow",
  "base64ct",
