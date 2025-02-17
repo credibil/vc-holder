@@ -6,7 +6,6 @@ use std::fmt::Debug;
 
 use anyhow::bail;
 use chrono::DateTime;
-pub use credibil_vc::infosec;
 pub use credibil_vc::issuer::proof;
 /// Re-exports from `credibil_vc` for issuance.
 pub use credibil_vc::issuer::{

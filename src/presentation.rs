@@ -6,7 +6,7 @@ use std::vec;
 
 use anyhow::{anyhow, bail};
 use credibil_vc::did::{DidResolver, Resource, dereference};
-use credibil_vc::infosec::jws;
+use credibil_vc::infosec::jose::jws;
 pub use credibil_vc::verifier::proof;
 // Re-export types from `credibil-vc` for use in the presentation module.
 pub use credibil_vc::verifier::{
@@ -195,6 +195,17 @@ pub async fn parse_request_object_response(
     let RequestObjectType::Jwt(token) = &res.request_object else {
         bail!("no serialized JWT found in response");
     };
+    parse_request_object_jwt(token, resolver).await
+}
+
+/// Parse a JWT into a `RequestObjectResponse`. Uses a DID resolver to verify
+/// the JWT.
+///
+/// # Errors
+/// If decoding or verifying the JWT fails an error is returned.
+pub async fn parse_request_object_jwt(
+    token: &str, resolver: impl DidResolver,
+) -> anyhow::Result<RequestObject> {
     let jwt: jws::Jwt<RequestObject> = jws::decode(token, move |kid| {
         let local_resolver = resolver.clone();
         async move {

@@ -1,0 +1,20 @@
+[package]
+name = "shared_types"
+description = "Shared types used to generate types in other languages for example wallet"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+
+[build-dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+crux_core = { workspace = true, features = ["typegen"] }
+crux_http = { workspace = true, features = ["typegen"] }
+crux_kv = { workspace = true, features = ["typegen"] }
+credibil-holder.workspace = true
+wallet = { path = "../shared", features = ["typegen"] }

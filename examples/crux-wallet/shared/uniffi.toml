@@ -1,0 +1,7 @@
+[bindings.kotlin]
+package_name = "io.credibil.wallet"
+cdylib_name = "wallet"
+
+[bindings.swift]
+cdylib_name = "wallet_ffi"
+omit_argument_labels = true

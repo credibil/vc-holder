@@ -55,4 +55,4 @@ pub mod issuance;
 pub mod presentation;
 pub mod provider;
 
-pub use credibil_vc::{Kind, Quota, test_utils};
+pub use credibil_vc::{Kind, Quota, did, infosec, test_utils, urlencode};

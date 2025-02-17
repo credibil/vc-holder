@@ -1,0 +1,672 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3094521C1A67DD7D838B40B0 /* uniffi-bindgen in Resources */ = {isa = PBXBuildFile; fileRef = E0480EEA6718D540ED7E0C84 /* uniffi-bindgen */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		56AEBB3FFEDD37A80A94DC15 /* SharedTypes in Frameworks */ = {isa = PBXBuildFile; productRef = D5E1CA2F63D5932A75624052 /* SharedTypes */; };
+		DD6CE117F10A9C662E40F9D7 /* libvercre_wallet_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1AB811B3E464499BBF4192 /* libvercre_wallet_static.a */; };
+		E226A32C2CE4259D00254154 /* kv.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226A32A2CE4259800254154 /* kv.swift */; };
+		E226A3302CE44BE200254154 /* key.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226A32E2CE44BDD00254154 /* key.swift */; };
+		E231BEEC2CEEC6B600E73109 /* ErrorDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E231BEEB2CEEC6B600E73109 /* ErrorDetail.swift */; };
+		E238CCE02CF3DFC4008B3158 /* ClaimTitleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E238CCDF2CF3DFC4008B3158 /* ClaimTitleItem.swift */; };
+		E238CCE22CF3E10E008B3158 /* ClaimTitleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E238CCE12CF3E10E008B3158 /* ClaimTitleList.swift */; };
+		E24EFF942CEEE04A0059203D /* IssuanceOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24EFF932CEEE04A0059203D /* IssuanceOffer.swift */; };
+		E261B7D42D515F9600A5945D /* PresentationScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E261B7D32D515F9600A5945D /* PresentationScan.swift */; };
+		E26CC4ED2CF036D30067B8ED /* ClaimList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26CC4EC2CF036D30067B8ED /* ClaimList.swift */; };
+		E2762B6D2D52F7C10050FDA8 /* PresentationSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2762B6C2D52F7C10050FDA8 /* PresentationSuccess.swift */; };
+		E278363A2D399A640010D977 /* IssuancePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27836392D399A640010D977 /* IssuancePin.swift */; };
+		E2934F2D2CD4508B00DC2BF9 /* CredentialCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2934F2C2CD4508B00DC2BF9 /* CredentialCard.swift */; };
+		E29F76452CBF0B9100496B37 /* sse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E295C7EC2CBE05E70070F7A5 /* sse.swift */; };
+		E29F76462CBF0B9100496B37 /* http.swift in Sources */ = {isa = PBXBuildFile; fileRef = E295C7EB2CBE042F0070F7A5 /* http.swift */; };
+		E29F76472CBF0B9100496B37 /* core.swift in Sources */ = {isa = PBXBuildFile; fileRef = E295C7EA2CBDF8FF0070F7A5 /* core.swift */; };
+		E29F76482CBF0B9100496B37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E295C7E92CBDF84C0070F7A5 /* ContentView.swift */; };
+		E29F76492CBF0B9100496B37 /* VercreWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E295C7E52CBDF7F40070F7A5 /* VercreWalletApp.swift */; };
+		E2B513932CC5953800D5A957 /* CredentialList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B513922CC5953800D5A957 /* CredentialList.swift */; };
+		E2B513992CC5B57500D5A957 /* IssuanceScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B513982CC5B57500D5A957 /* IssuanceScan.swift */; };
+		E2B5139C2CC5B81B00D5A957 /* PresentationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B5139B2CC5B81B00D5A957 /* PresentationRequest.swift */; };
+		E2B513A62CC8896300D5A957 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = E2B513A52CC8896300D5A957 /* CodeScanner */; };
+		E2DACD702CD95E4700C9E9D5 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD6F2CD95E3900C9E9D5 /* Color.swift */; };
+		E2DACD722CD98FCC00C9E9D5 /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD712CD98FCC00C9E9D5 /* Logo.swift */; };
+		E2DACD752CD9935600C9E9D5 /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD742CD9935600C9E9D5 /* Background.swift */; };
+		E2DACD7A2CD9AD9400C9E9D5 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD792CD9AD9400C9E9D5 /* NavigationBar.swift */; };
+		E2DACD7D2CD9BE8D00C9E9D5 /* CredentialDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD7C2CD9BE8D00C9E9D5 /* CredentialDetailView.swift */; };
+		E2DACD802CD9C13300C9E9D5 /* DetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD7F2CD9C13300C9E9D5 /* DetailItem.swift */; };
+		E2DACD852CDAF31F00C9E9D5 /* store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DACD832CDAF31600C9E9D5 /* store.swift */; };
+		E4D6F166B7CC70F6321FE5BF /* wallet.udl in Sources */ = {isa = PBXBuildFile; fileRef = 608E5734A631C27F19673C40 /* wallet.udl */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		791BDD9F1519E3AB18CDFCC1 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.udl";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			name = "Generate FFI";
+			outputFiles = (
+				"$(PROJECT_DIR)/generated/$(INPUT_FILE_BASE).swift",
+				"$(PROJECT_DIR)/generated/$(INPUT_FILE_BASE)FFI.h",
+			);
+			outputFilesCompilerFlags = (
+			);
+			runOncePerArchitecture = 0;
+			script = "#!/bin/bash\nset -e\n\n# Skip during indexing phase in XCode 13+\nif [ \"$ACTION\" == \"indexbuild\" ]; then\n  echo \"Not building *.udl files during indexing.\"\n  exit 0\nfi\n\n# Skip for preview builds\nif [ \"$ENABLE_PREVIEWS\" = \"YES\" ]; then\n  echo \"Not building *.udl files during preview builds.\"\n  exit 0\nfi\n\ncd \"${INPUT_FILE_DIR}/..\"\n\"${BUILD_DIR}/debug/uniffi-bindgen\" generate \"src/${INPUT_FILE_NAME}\" --language swift --out-dir \"${PROJECT_DIR}/generated\"\n";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		2FC3DF1BB3ED6B8BB1E349B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 427FF9F929E8FC5DB2A1EBFD /* Wallet */;
+			proxyType = 1;
+			remoteGlobalIDString = CA02AB5B13AB20F189EC80A8;
+			remoteInfo = "uniffi-bindgen-bin";
+		};
+		648BC16B8C3F2B90DC20E1CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 427FF9F929E8FC5DB2A1EBFD /* Wallet */;
+			proxyType = 2;
+			remoteGlobalIDString = CA02AB5B13AB8109328FB0D5;
+			remoteInfo = "uniffi-bindgen-bin";
+		};
+		7D986408AADA0A59F1BF31F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 427FF9F929E8FC5DB2A1EBFD /* Wallet */;
+			proxyType = 2;
+			remoteGlobalIDString = CA0048903B90A794234CEF02;
+			remoteInfo = "vercre_wallet-staticlib";
+		};
+		CCB52F8B64A3394B91C64042 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 427FF9F929E8FC5DB2A1EBFD /* Wallet */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0048903B90A0ECD9C78AA4;
+			remoteInfo = "vercre_wallet-staticlib";
+		};
+		E295C7E72CBDF7F40070F7A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 427FF9F929E8FC5DB2A1EBFD /* Wallet */;
+			proxyType = 2;
+			remoteGlobalIDString = CA011621871375DBFE57B7F1;
+			remoteInfo = "vercre_wallet-cdylib";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		427FF9F929E8FC5DB2A1EBFD /* Wallet */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wallet; path = "../wallet/vercre-wallet.xcodeproj"; sourceTree = "<group>"; };
+		608E5734A631C27F19673C40 /* wallet.udl */ = {isa = PBXFileReference; lastKnownFileType = text; path = wallet.udl; sourceTree = "<group>"; };
+		8D9939D8923D10F21E0FE9DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B1593DC3198F51583D1B1654 /* VercreWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VercreWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E226A32A2CE4259800254154 /* kv.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kv.swift; sourceTree = "<group>"; };
+		E226A32E2CE44BDD00254154 /* key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = key.swift; sourceTree = "<group>"; };
+		E231BEEB2CEEC6B600E73109 /* ErrorDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetail.swift; sourceTree = "<group>"; };
+		E238CCDF2CF3DFC4008B3158 /* ClaimTitleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimTitleItem.swift; sourceTree = "<group>"; };
+		E238CCE12CF3E10E008B3158 /* ClaimTitleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimTitleList.swift; sourceTree = "<group>"; };
+		E24EFF932CEEE04A0059203D /* IssuanceOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuanceOffer.swift; sourceTree = "<group>"; };
+		E261B7D32D515F9600A5945D /* PresentationScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationScan.swift; sourceTree = "<group>"; };
+		E26CC4EC2CF036D30067B8ED /* ClaimList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimList.swift; sourceTree = "<group>"; };
+		E2762B6C2D52F7C10050FDA8 /* PresentationSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationSuccess.swift; sourceTree = "<group>"; };
+		E27836392D399A640010D977 /* IssuancePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuancePin.swift; sourceTree = "<group>"; };
+		E2934F2C2CD4508B00DC2BF9 /* CredentialCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialCard.swift; sourceTree = "<group>"; };
+		E295C7E52CBDF7F40070F7A5 /* VercreWalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VercreWalletApp.swift; sourceTree = "<group>"; };
+		E295C7E92CBDF84C0070F7A5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E295C7EA2CBDF8FF0070F7A5 /* core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = core.swift; sourceTree = "<group>"; };
+		E295C7EB2CBE042F0070F7A5 /* http.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = http.swift; sourceTree = "<group>"; };
+		E295C7EC2CBE05E70070F7A5 /* sse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sse.swift; sourceTree = "<group>"; };
+		E2B513922CC5953800D5A957 /* CredentialList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialList.swift; sourceTree = "<group>"; };
+		E2B513982CC5B57500D5A957 /* IssuanceScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuanceScan.swift; sourceTree = "<group>"; };
+		E2B5139B2CC5B81B00D5A957 /* PresentationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationRequest.swift; sourceTree = "<group>"; };
+		E2DACD6F2CD95E3900C9E9D5 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		E2DACD712CD98FCC00C9E9D5 /* Logo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
+		E2DACD742CD9935600C9E9D5 /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		E2DACD792CD9AD9400C9E9D5 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		E2DACD7C2CD9BE8D00C9E9D5 /* CredentialDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialDetailView.swift; sourceTree = "<group>"; };
+		E2DACD7F2CD9C13300C9E9D5 /* DetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItem.swift; sourceTree = "<group>"; };
+		E2DACD832CDAF31600C9E9D5 /* store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = store.swift; sourceTree = "<group>"; };
+		E87317161D4E9F5AB16EA2A3 /* SharedTypes */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SharedTypes; path = ../shared_types/generated/swift/SharedTypes; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		16369F0337F4F502D114E440 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD6CE117F10A9C662E40F9D7 /* libvercre_wallet_static.a in Frameworks */,
+				56AEBB3FFEDD37A80A94DC15 /* SharedTypes in Frameworks */,
+				E2B513A62CC8896300D5A957 /* CodeScanner in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4855A0B2F9620CBDBCE625A9 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				427FF9F929E8FC5DB2A1EBFD /* Wallet */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		5C8A15AD59C4BE22CF1366E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1593DC3198F51583D1B1654 /* VercreWallet.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6D5A7EBBC5FAE24EA47023DA /* VercreWallet */ = {
+			isa = PBXGroup;
+			children = (
+				E231BEE92CEEC6A000E73109 /* Error */,
+				E2DACD6D2CD95E2800C9E9D5 /* Utilities */,
+				E2DCBC8B2CD01F4B002176D1 /* Model */,
+				E2B5139A2CC5B7FF00D5A957 /* Presentation */,
+				E2B513972CC5B56000D5A957 /* Issuance */,
+				E2B513942CC5A79C00D5A957 /* Components */,
+				E2B513912CC594F600D5A957 /* Credential */,
+				E2B513902CC594D400D5A957 /* Crux */,
+				E295C7E92CBDF84C0070F7A5 /* ContentView.swift */,
+				E295C7E52CBDF7F40070F7A5 /* VercreWalletApp.swift */,
+				8D9939D8923D10F21E0FE9DC /* Info.plist */,
+			);
+			path = VercreWallet;
+			sourceTree = "<group>";
+		};
+		86CF1AF5DC18DA1509900562 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B1AB811B3E464499BBF4192 /* libvercre_wallet_static.a */,
+				E295C7E82CBDF7F40070F7A5 /* vercre_wallet.dylib */,
+				E0480EEA6718D540ED7E0C84 /* uniffi-bindgen */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		88D05DA4EFF0786DC8398A1E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				608E5734A631C27F19673C40 /* wallet.udl */,
+			);
+			name = src;
+			path = ../wallet/src;
+			sourceTree = "<group>";
+		};
+		9405D229F654574512E48F50 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				E87317161D4E9F5AB16EA2A3 /* SharedTypes */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		AB7A31C84460D755A6092417 = {
+			isa = PBXGroup;
+			children = (
+				9405D229F654574512E48F50 /* Packages */,
+				88D05DA4EFF0786DC8398A1E /* src */,
+				6D5A7EBBC5FAE24EA47023DA /* VercreWallet */,
+				5C8A15AD59C4BE22CF1366E5 /* Products */,
+				4855A0B2F9620CBDBCE625A9 /* Projects */,
+			);
+			sourceTree = "<group>";
+		};
+		E231BEE92CEEC6A000E73109 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				E231BEEB2CEEC6B600E73109 /* ErrorDetail.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		E2B513902CC594D400D5A957 /* Crux */ = {
+			isa = PBXGroup;
+			children = (
+				E226A32E2CE44BDD00254154 /* key.swift */,
+				E226A32A2CE4259800254154 /* kv.swift */,
+				E2DACD832CDAF31600C9E9D5 /* store.swift */,
+				E295C7EB2CBE042F0070F7A5 /* http.swift */,
+				E295C7EC2CBE05E70070F7A5 /* sse.swift */,
+				E295C7EA2CBDF8FF0070F7A5 /* core.swift */,
+			);
+			path = Crux;
+			sourceTree = "<group>";
+		};
+		E2B513912CC594F600D5A957 /* Credential */ = {
+			isa = PBXGroup;
+			children = (
+				E2B513922CC5953800D5A957 /* CredentialList.swift */,
+				E2934F2C2CD4508B00DC2BF9 /* CredentialCard.swift */,
+				E2DACD712CD98FCC00C9E9D5 /* Logo.swift */,
+				E2DACD742CD9935600C9E9D5 /* Background.swift */,
+				E2DACD7C2CD9BE8D00C9E9D5 /* CredentialDetailView.swift */,
+				E26CC4EC2CF036D30067B8ED /* ClaimList.swift */,
+			);
+			path = Credential;
+			sourceTree = "<group>";
+		};
+		E2B513942CC5A79C00D5A957 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E2DACD792CD9AD9400C9E9D5 /* NavigationBar.swift */,
+				E2DACD7F2CD9C13300C9E9D5 /* DetailItem.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E2B513972CC5B56000D5A957 /* Issuance */ = {
+			isa = PBXGroup;
+			children = (
+				E2B513982CC5B57500D5A957 /* IssuanceScan.swift */,
+				E24EFF932CEEE04A0059203D /* IssuanceOffer.swift */,
+				E238CCDF2CF3DFC4008B3158 /* ClaimTitleItem.swift */,
+				E238CCE12CF3E10E008B3158 /* ClaimTitleList.swift */,
+				E27836392D399A640010D977 /* IssuancePin.swift */,
+			);
+			path = Issuance;
+			sourceTree = "<group>";
+		};
+		E2B5139A2CC5B7FF00D5A957 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E2B5139B2CC5B81B00D5A957 /* PresentationRequest.swift */,
+				E261B7D32D515F9600A5945D /* PresentationScan.swift */,
+				E2762B6C2D52F7C10050FDA8 /* PresentationSuccess.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		E2DACD6D2CD95E2800C9E9D5 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E2DACD6F2CD95E3900C9E9D5 /* Color.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E2DCBC8B2CD01F4B002176D1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E1B69E35C4E22AD2787B016B /* VercreWallet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C1BFB426A9B404725423894A /* Build configuration list for PBXNativeTarget "VercreWallet" */;
+			buildPhases = (
+				7D54D9E2EF374938D81538C8 /* Sources */,
+				8FA1F5EE22E4BC208A52C17F /* Resources */,
+				16369F0337F4F502D114E440 /* Frameworks */,
+			);
+			buildRules = (
+				791BDD9F1519E3AB18CDFCC1 /* PBXBuildRule */,
+			);
+			dependencies = (
+				F06FC2C521266DC3F95E7D55 /* PBXTargetDependency */,
+				955971696378805C6EF2AAB4 /* PBXTargetDependency */,
+			);
+			name = VercreWallet;
+			packageProductDependencies = (
+				D5E1CA2F63D5932A75624052 /* SharedTypes */,
+				E2B513A52CC8896300D5A957 /* CodeScanner */,
+			);
+			productName = VercreWallet;
+			productReference = B1593DC3198F51583D1B1654 /* VercreWallet.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C19E288E3B8F085DEDFE5A3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = CCBB1BED24149742DFBCF930 /* Build configuration list for PBXProject "VercreWallet" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = AB7A31C84460D755A6092417;
+			packageReferences = (
+				5BC19551CA9B0886D560A9A6 /* XCLocalSwiftPackageReference "../shared/generated/swift/SharedTypes" */,
+				E2B513A42CC8896300D5A957 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 86CF1AF5DC18DA1509900562 /* Products */;
+					ProjectRef = 427FF9F929E8FC5DB2A1EBFD /* Wallet */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E1B69E35C4E22AD2787B016B /* VercreWallet */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4B1AB811B3E464499BBF4192 /* libvercre_wallet_static.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvercre_wallet_static.a;
+			remoteRef = 7D986408AADA0A59F1BF31F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E0480EEA6718D540ED7E0C84 /* uniffi-bindgen */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = "uniffi-bindgen";
+			remoteRef = 648BC16B8C3F2B90DC20E1CC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E295C7E82CBDF7F40070F7A5 /* vercre_wallet.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = vercre_wallet.dylib;
+			remoteRef = E295C7E72CBDF7F40070F7A5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8FA1F5EE22E4BC208A52C17F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3094521C1A67DD7D838B40B0 /* uniffi-bindgen in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7D54D9E2EF374938D81538C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29F76452CBF0B9100496B37 /* sse.swift in Sources */,
+				E2DACD722CD98FCC00C9E9D5 /* Logo.swift in Sources */,
+				E2DACD752CD9935600C9E9D5 /* Background.swift in Sources */,
+				E2DACD7A2CD9AD9400C9E9D5 /* NavigationBar.swift in Sources */,
+				E226A3302CE44BE200254154 /* key.swift in Sources */,
+				E24EFF942CEEE04A0059203D /* IssuanceOffer.swift in Sources */,
+				E29F76462CBF0B9100496B37 /* http.swift in Sources */,
+				E2DACD802CD9C13300C9E9D5 /* DetailItem.swift in Sources */,
+				E26CC4ED2CF036D30067B8ED /* ClaimList.swift in Sources */,
+				E2762B6D2D52F7C10050FDA8 /* PresentationSuccess.swift in Sources */,
+				E2B513992CC5B57500D5A957 /* IssuanceScan.swift in Sources */,
+				E29F76472CBF0B9100496B37 /* core.swift in Sources */,
+				E29F76482CBF0B9100496B37 /* ContentView.swift in Sources */,
+				E238CCE02CF3DFC4008B3158 /* ClaimTitleItem.swift in Sources */,
+				E2934F2D2CD4508B00DC2BF9 /* CredentialCard.swift in Sources */,
+				E261B7D42D515F9600A5945D /* PresentationScan.swift in Sources */,
+				E2DACD852CDAF31F00C9E9D5 /* store.swift in Sources */,
+				E29F76492CBF0B9100496B37 /* VercreWalletApp.swift in Sources */,
+				E231BEEC2CEEC6B600E73109 /* ErrorDetail.swift in Sources */,
+				E226A32C2CE4259D00254154 /* kv.swift in Sources */,
+				E2DACD702CD95E4700C9E9D5 /* Color.swift in Sources */,
+				E278363A2D399A640010D977 /* IssuancePin.swift in Sources */,
+				E238CCE22CF3E10E008B3158 /* ClaimTitleList.swift in Sources */,
+				E2DACD7D2CD9BE8D00C9E9D5 /* CredentialDetailView.swift in Sources */,
+				E2B513932CC5953800D5A957 /* CredentialList.swift in Sources */,
+				E4D6F166B7CC70F6321FE5BF /* wallet.udl in Sources */,
+				E2B5139C2CC5B81B00D5A957 /* PresentationRequest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		955971696378805C6EF2AAB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "vercre_wallet-staticlib";
+			targetProxy = CCB52F8B64A3394B91C64042 /* PBXContainerItemProxy */;
+		};
+		F06FC2C521266DC3F95E7D55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "uniffi-bindgen-bin";
+			targetProxy = 2FC3DF1BB3ED6B8BB1E349B7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0EE47A93F9B9A3801C1C6EB7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = L8V5YK7Y9T;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = VercreWallet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-w",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.vercre.wallet.VercreWallet;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = generated/walletFFI.h;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		11C0EE74AD143B75C891BE0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = L8V5YK7Y9T;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = VercreWallet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-w",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.vercre.wallet.VercreWallet;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = generated/walletFFI.h;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		95F317794B2E9956BD714BA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F5CF906A0AF1E13059C83592 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C1BFB426A9B404725423894A /* Build configuration list for PBXNativeTarget "VercreWallet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EE47A93F9B9A3801C1C6EB7 /* Debug */,
+				11C0EE74AD143B75C891BE0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CCBB1BED24149742DFBCF930 /* Build configuration list for PBXProject "VercreWallet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F5CF906A0AF1E13059C83592 /* Debug */,
+				95F317794B2E9956BD714BA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		5BC19551CA9B0886D560A9A6 /* XCLocalSwiftPackageReference "../shared/generated/swift/SharedTypes" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../shared/generated/swift/SharedTypes;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E2B513A42CC8896300D5A957 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D5E1CA2F63D5932A75624052 /* SharedTypes */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedTypes;
+		};
+		E2B513A52CC8896300D5A957 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2B513A42CC8896300D5A957 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9C19E288E3B8F085DEDFE5A3 /* Project object */;
+}
