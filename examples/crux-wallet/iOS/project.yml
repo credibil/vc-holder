@@ -1,29 +1,29 @@
-name: VercreWallet
+name: Wallet
 projectReferences:
   Wallet:
-    path: ../wallet/vercre-wallet.xcodeproj
+    path: ../shared/wallet.xcodeproj
 packages:
   SharedTypes:
-    path: ../shared/generated/swift/SharedTypes
+    path: ../shared_types/generated/swift/SharedTypes
 options:
-  bundleIdPrefix: io.vercre.wallet
+  bundleIdPrefix: io.credibil.wallet
 attributes:
   BuildIndependentTargetsInParallel: true
 targets:
-  VercreWallet:
+  Wallet:
     type: application
     platform: iOS
     deploymentTarget: "15.0"
     sources:
-      - VercreWallet
-      - path: ../wallet/src/wallet.udl
+      - Wallet
+      - path: ../shared/src/wallet.udl
         buildPhase: sources
     dependencies:
       - target: Wallet/uniffi-bindgen-bin
-      - target: Wallet/vercre_wallet-staticlib
+      - target: Wallet/wallet-staticlib
       - package: SharedTypes
     info:
-      path: VercreWallet/Info.plist
+      path: Wallet/Info.plist
       properties:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
