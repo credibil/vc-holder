@@ -13,8 +13,8 @@ version.workspace = true
 [build-dependencies]
 anyhow.workspace = true
 chrono.workspace = true
-crux_core = { workspace = true, features = ["typegen"] }
-crux_http = { workspace = true, features = ["typegen"] }
-crux_kv = { workspace = true, features = ["typegen"] }
+crux_core.workspace = true
+crux_http.workspace = true
+crux_kv.workspace = true
 credibil-holder.workspace = true
 wallet = { path = "../shared", features = ["typegen"] }

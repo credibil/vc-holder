@@ -30,8 +30,6 @@ tokio = { version = "1.43.0", features = ["rt-multi-thread", "macros"] }
 
 [workspace]
 members = [
-  "examples/crux-wallet/shared",
-  "examples/crux-wallet/shared_types",
   "examples/tauri-wallet/src-tauri",
   "examples/vcservice"
 ]
@@ -40,14 +38,14 @@ resolver = "2"
 [workspace.package]
 authors = ["Credibil"]
 categories = ["data", "messaging", "didcomm", "identity", "verifiable"]
-edition = "2021"
+edition = "2024"
 exclude = [".*", "/docs", "snapshots/"]
 homepage = "https://credibil.io"
 keywords = ["credentials", "decentralized", "identity", "openid", "verifiable"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/credibil/holder"
-rust-version = "1.84"
+rust-version = "1.85"
 version = "0.1.0"
 
 [workspace.lints.rust]
@@ -65,15 +63,11 @@ base64ct = {version = "1.6.0", features = ["std"]}
 chrono = {version = "0.4.39", features = ["serde"]}
 credibil-holder = {path = "."}
 credibil-vc = {git = "https://github.com/credibil/vc", features = ["issuer", "verifier"]}
-crux_core = { version = "0.11.3", features = ["typegen"] }
-crux_http = { version = "0.11.6", features = ["typegen"] }
-crux_kv = { version = "0.6.2", features = ["typegen"] }
 ed25519-dalek = { version = "2.1.1", features = ["serde"] }
 insta = { version = "1.42.1", features = ["redactions", "yaml"] }
 serde = {version = "1.0.217", features = ["derive"]}
 serde_json = {version = "1.0.138", features = ["alloc"]}
 typeshare = "1.0.3"
-url = "2.5.4"
 
 [workspace.metadata.bin]
 cargo-xcode = { version = "=1.7.0" }
