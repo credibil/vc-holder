@@ -1,7 +1,7 @@
 //! Application state implementation for issuance operations.
 
 use anyhow::bail;
-use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::infosec::jose::jws::JwsBuilder;
 use credibil_holder::issuance::proof::{Payload, Type, Verify};
 use credibil_holder::issuance::{
     Accepted, CredentialOffer, CredentialResponseType, IssuanceFlow, MetadataRequest, NotAccepted,

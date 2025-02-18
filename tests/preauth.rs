@@ -2,7 +2,7 @@
 //! accepts all credentials and all claims on offer.
 mod provider;
 
-use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::infosec::jose::jws::JwsBuilder;
 use credibil_holder::issuance::proof::{self, Payload, Type, Verify};
 use credibil_holder::issuance::{
     CredentialResponseType, IssuanceFlow, NotAccepted, OfferType, PreAuthorized, SendType,

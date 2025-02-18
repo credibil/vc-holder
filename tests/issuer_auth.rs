@@ -2,7 +2,7 @@
 //! authorization.
 mod provider;
 
-use credibil_holder::issuance::infosec::jws::JwsBuilder;
+use credibil_holder::infosec::jose::jws::JwsBuilder;
 use credibil_holder::issuance::proof::{self, Payload, Type, Verify};
 use credibil_holder::issuance::{
     AuthCode, CredentialResponseType, IssuanceFlow, NotAccepted, OfferType, SendType, WithOffer,
