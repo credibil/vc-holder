@@ -16,7 +16,7 @@ use axum::extract::rejection::JsonRejection;
 use axum::http::{HeaderValue, Request, StatusCode, header};
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
-use handler::{issuer, verifier};
+use handler::{assets, issuer, verifier};
 use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
 use tower_http::cors::{Any, CorsLayer};
@@ -45,9 +45,9 @@ async fn main() {
         FmtSubscriber::builder().with_env_filter(EnvFilter::from_default_env()).finish();
     tracing::subscriber::set_global_default(subscriber).expect("set default subscriber");
     let external_address =
-        env::var("VERCRE_HTTP_ADDR").unwrap_or_else(|_| "http://0.0.0.0:8080".into());
-    let issuer = env::var("VERCRE_ISSUER").unwrap_or_else(|_| "http://vercre.io".into());
-    let verifier = env::var("VERCRE_VERIFIER").unwrap_or_else(|_| "http://localhost:8080".into());
+        env::var("CREDIBIL_HTTP_ADDRESS").unwrap_or_else(|_| "http://0.0.0.0:8080".into());
+    let issuer = env::var("CREDIBIL_ISSUER").unwrap_or_else(|_| "http://credibil.io".into());
+    let verifier = env::var("CREDIBIL_VERIFIER").unwrap_or_else(|_| "http://localhost:8080".into());
 
     let app_state = AppState {
         external_address: external_address.clone().into(),
@@ -69,6 +69,7 @@ async fn main() {
         .route("/verifier/did.json", get(verifier::did))
         .route("/request/:object_id", get(verifier::request_object))
         .route("/post", post(verifier::response))
+        .nest_service("/assets/:filename", get(assets::asset))
         .layer(
             TraceLayer::new_for_http()
                 .make_span_with(|_request: &Request<Body>| tracing::debug_span!("http-request"))

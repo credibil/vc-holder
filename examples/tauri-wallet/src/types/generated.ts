@@ -100,7 +100,7 @@ export interface IssuanceView {
 
 /**
  * Status of the presentation flow. This is re-typed instead of using the
- * status defined by vercre-holder so that we can use typeshare to generate the
+ * status defined by credibil-holder so that we can use typeshare to generate the
  * equivalent TypeScript enum.
  */
 export enum PresentationStatus {

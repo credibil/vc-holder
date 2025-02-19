@@ -9,7 +9,7 @@ export const authHeader = (token: string) => ({
     Authorization: `Bearer ${token}`,
 });
 
-export const svcUrl = import.meta.env.VITE_VERCRE_HTTP_ADDR || "http://localhost:8080";
+export const svcUrl = import.meta.env.VITE_CREDIBIL_HTTP_ADDRESS || "http://localhost:8080";
 
 // Generic error message for API calls.
 export const returnError = (action: string): string => {

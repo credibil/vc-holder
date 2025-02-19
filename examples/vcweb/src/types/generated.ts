@@ -34,7 +34,7 @@ export interface ErrorResponse {
 
 /**
  * Type-generation friendly copy of the `Field` struct from the
- * `vercre-diff-exch` crate, omitting any fields that are not applicable to
+ * `credibil_vc::verifier` crate, omitting any fields that are not applicable to
  * this sample application.
  */
 export interface GenerateField {
@@ -49,7 +49,7 @@ export interface GenerateField {
 
 /**
  * Type-generation friendly copy of the `Constraints` struct from the
- * `vercre-diff-exch` crate, omitting any fields that are not applicable to
+ * `credibil_vc::verifier` crate, omitting any fields that are not applicable to
  * this sample application.
  */
 export interface GenerateConstraints {
@@ -58,7 +58,7 @@ export interface GenerateConstraints {
 
 /**
  * Input descriptor for the request. Type-generation friendly copy of the
- * `InputDescriptor` struct from the `vercre-diff-exch` crate, omitting any
+ * `InputDescriptor` struct from the `credibil_vc::verifier` crate, omitting any
  * fields that are not applicable to this sample application.
  */
 export interface GenerateInputDescriptor {
@@ -73,7 +73,7 @@ export interface GenerateInputDescriptor {
 
 /**
  * Create authorization request. This is almost a copy of the
- * `CreateRequestRequest` struct from the `vercre_verifier` crate but repeated
+ * `CreateRequestRequest` struct from the `credibil_vc::verifier` crate but repeated
  * here to allow `typeshare` to generate the TypeScript equivalent for the
  * sample Verifier application.
  */

@@ -12,8 +12,8 @@ use axum_extra::TypedHeader;
 use axum_extra::headers::Authorization;
 use axum_extra::headers::authorization::Bearer;
 use credibil_vc::issuer::{
-    CredentialRequest, CredentialResponse, MetadataRequest, MetadataResponse, OfferType, SendType,
-    TokenRequest, TokenResponse,
+    CredentialDisplay, CredentialRequest, CredentialResponse, Image, MetadataRequest,
+    MetadataResponse, OfferType, SendType, TokenRequest, TokenResponse,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -118,11 +118,46 @@ pub async fn metadata(
 
     // Override the issuer's endpoint information with the environment variable
     // if it exists so our hardcoded data can work with our hosting location.
+    let existing_issuer = response.credential_issuer.credential_issuer.clone();
+    tracing::debug!("existing issuer: {existing_issuer}");
     response.credential_issuer.credential_issuer = state.external_address.to_string();
     response.credential_issuer.credential_endpoint =
         format!("{}/credential", state.external_address);
     response.credential_issuer.deferred_credential_endpoint =
         Some(format!("{}/deferred", state.external_address));
+    // Display image file URLs
+    let mut updated_supported = response.credential_issuer.credential_configurations_supported.clone();
+    for (id, config) in &response.credential_issuer.credential_configurations_supported {
+        let mut updated_config = config.clone();
+        if let Some(config_display) = &config.display {
+            let mut display = Vec::<CredentialDisplay>::new();
+            for locale in config_display {
+                let mut updated_locale = locale.clone();
+                if let Some(logo) = &locale.logo {
+                    if let Some(uri) = &logo.uri {
+                        let updated_uri = uri.replace(&existing_issuer, &state.external_address);
+                        updated_locale.logo = Some(Image {
+                            uri: Some(updated_uri),
+                            alt_text: logo.alt_text.clone(),
+                        })
+                    }
+                }
+                if let Some(background) = &locale.background_image {
+                    if let Some(uri) = &background.uri {
+                        let updated_uri = uri.replace(&existing_issuer, &state.external_address);
+                        updated_locale.background_image = Some(Image {
+                            uri: Some(updated_uri),
+                            alt_text: background.alt_text.clone(),
+                        })
+                    }
+                }
+                display.push(updated_locale);
+            }
+            updated_config.display = Some(display);
+        }
+        updated_supported.insert(id.clone(), updated_config);
+    }
+    response.credential_issuer.credential_configurations_supported = updated_supported;
 
     Ok(AppJson(response))
 }
