@@ -31,9 +31,9 @@ anyhow = "1.0.95"
 base64ct = {version = "1.6.0", features = ["std"]}
 chrono = {version = "0.4.39", features = ["serde"]}
 credibil-holder = { path = "../.." }
-crux_core = { version = "0.11.3", features = ["typegen"] }
-crux_http = { version = "0.11.6", features = ["typegen"] }
-crux_kv = { version = "0.6.2", features = ["typegen"] }
+crux_core = { version = "0.12.0", features = ["typegen"] }
+crux_http = { version = "0.11.7", features = ["typegen"] }
+crux_kv = { version = "0.6.3", features = ["typegen"] }
 ed25519-dalek = { version = "2.1.1", features = ["serde"] }
 serde = { version = "1.0.213", features = ["derive"] }
 url = "2.5.4"

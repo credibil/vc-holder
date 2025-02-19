@@ -814,9 +814,9 @@ checksum = "43da5946c66ffcc7745f48db692ffbb10a83bfe0afd96235c5c2a4fb23994929"
 
 [[package]]
 name = "crux_core"
-version = "0.11.3"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d51dc7ff43f6de952f493d0044c3a9bc0f24877af1d06f069f94d58e92ea133f"
+checksum = "698fd9872826b070544cf8304306af17fa3b6454dc82238188ad910eb392fd88"
 dependencies = [
  "anyhow",
  "bincode",
@@ -834,9 +834,9 @@ dependencies = [
 
 [[package]]
 name = "crux_http"
-version = "0.11.6"
+version = "0.11.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1821645f735923646e7ab09c0edbe4c2b5532e36af5432250524ce8dead24258"
+checksum = "89992e2b18059557ce5dd83accbe629fdd7b455f315edb313b7109099d516f04"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -856,9 +856,9 @@ dependencies = [
 
 [[package]]
 name = "crux_kv"
-version = "0.6.2"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68ae998ae1d0c058f5f4ac6ded1be63e2bf10dc973b54f42f4f446dcd0a57909"
+checksum = "9455fedaf71d006a33c5c28369ee37c5321e9582a766313ece878bc19d48989c"
 dependencies = [
  "anyhow",
  "crux_core",

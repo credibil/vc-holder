@@ -12,11 +12,11 @@ use crate::AppError;
 pub async fn asset(Path(filename): Path<String>) -> Result<Response, AppError> {
     let body = match filename.as_str() {
         "employee.png" => Body::from(include_bytes!("assets/employee_logo.png").to_vec()),
-        "employee_background.png" => {
+        "employee-background.png" => {
             Body::from(include_bytes!("assets/employee_background.png").to_vec())
         }
         "developer.png" => Body::from(include_bytes!("assets/developer_logo.png").to_vec()),
-        "developer_background.png" => {
+        "developer-background.png" => {
             Body::from(include_bytes!("assets/developer_background.png").to_vec())
         }
         _ => return Err(AppError::Status(StatusCode::NOT_FOUND, format!("Unknown asset {filename}"))),
