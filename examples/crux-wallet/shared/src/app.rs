@@ -386,7 +386,6 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                *model = model.active_view(Aspect::IssuanceOffer);
                 render()
             }
             Event::IssuanceAccepted => {
