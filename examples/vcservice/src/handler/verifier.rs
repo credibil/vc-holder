@@ -19,7 +19,7 @@ use super::{AppError, AppJson};
 use crate::AppState;
 
 /// Create authorization request. This is almost a copy of the
-/// `CreateRequestRequest` struct from the `vercre_verifier` crate but repeated
+/// `CreateRequestRequest` struct from the `credibil_vc::verifier` crate but repeated
 /// here to allow `typeshare` to generate the TypeScript equivalent for the
 /// sample Verifier application.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -33,7 +33,7 @@ pub struct GenerateRequest {
 }
 
 /// Input descriptor for the request. Type-generation friendly copy of the
-/// `InputDescriptor` struct from the `vercre-diff-exch` crate, omitting any
+/// `InputDescriptor` struct from the `credibil_vc::verifier` crate, omitting any
 /// fields that are not applicable to this sample application.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[typeshare]
@@ -47,7 +47,7 @@ pub struct GenerateInputDescriptor {
 }
 
 /// Type-generation friendly copy of the `Constraints` struct from the
-/// `vercre-diff-exch` crate, omitting any fields that are not applicable to
+/// `credibil_vc::verifier` crate, omitting any fields that are not applicable to
 /// this sample application.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[typeshare]
@@ -56,7 +56,7 @@ pub struct GenerateConstraints {
 }
 
 /// Type-generation friendly copy of the `Field` struct from the
-/// `vercre-diff-exch` crate, omitting any fields that are not applicable to
+/// `credibil_vc::verifier` crate, omitting any fields that are not applicable to
 /// this sample application.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[typeshare]

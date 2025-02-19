@@ -102,10 +102,18 @@ args = ["release", "${@}", "--execute"]
 install_crate = "cargo-release"
 
 # -----------------------------------------------------------------------------
-# Type generation for Tauri wallet example
+# Type generation for Tauri Wallet and VCWeb examples
 # -----------------------------------------------------------------------------
 
 [tasks.typegen]
+dependencies = ["typegen-tauri", "typegen-vcweb"]
+
+[tasks.typegen-tauri]
 command = "typeshare"
-args = ["./examples/wallet/src-tauri", "--lang=typescript", "--output-file=./examples/wallet/src/types/generated.ts"]
+args = ["./examples/tauri-wallet/src-tauri", "--lang=typescript", "--output-file=./examples/tauri-wallet/src/types/generated.ts"]
+install_crate = "typeshare-cli"
+
+[tasks.typegen-vcweb]
+command = "typeshare"
+args = ["./examples/vcservice", "--lang=typescript", "--output-file=./examples/vcweb/src/types/generated.ts"]
 install_crate = "typeshare-cli"

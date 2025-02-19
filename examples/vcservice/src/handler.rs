@@ -3,6 +3,7 @@ use serde::Serialize;
 
 use crate::{AppError, AppJson, AppState};
 
+pub mod assets;
 pub mod issuer;
 pub mod verifier;
 

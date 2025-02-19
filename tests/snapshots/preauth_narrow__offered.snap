@@ -1,6 +1,6 @@
 ---
 source: tests/preauth_narrow.rs
-assertion_line: 76
+assertion_line: 79
 expression: offered
 ---
 Developer_JWT:
@@ -42,12 +42,12 @@ Developer_JWT:
     - name: Developer
       locale: en-NZ
       logo:
-        uri: "https://credibil.io/assets/developer.png"
+        uri: "http://credibil.io/assets/developer.png"
         alt_text: Developer Logo
       description: Credibil certified developer credential
       background_color: "#010100"
       background_image:
-        uri: "https://credibil.io/assets/developer-background.png"
+        uri: "http://credibil.io/assets/developer-background.png"
         alt_text: Developer Background
       text_color: "#ffffff"
 EmployeeID_JWT:
@@ -112,11 +112,11 @@ EmployeeID_JWT:
     - name: Employee ID
       locale: en-NZ
       logo:
-        uri: "https://credibil.io/assets/employee.png"
+        uri: "http://credibil.io/assets/employee.png"
         alt_text: Employee ID Logo
       description: Credibil employee ID credential
       background_color: "#323ed2"
       background_image:
-        uri: "https://credibil.io/assets/employee-background.png"
+        uri: "http://credibil.io/assets/employee-background.png"
         alt_text: Employee ID Background
       text_color: "#ffffff"
