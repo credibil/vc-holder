@@ -12,14 +12,24 @@ pub enum PresentationState {
 
     /// A presentation request has been received but not yet decoded or
     /// verified.
-    Requested { request_payload: String },
+    Requested {
+        request_payload: String,
+    },
 
     /// The presentation request has been decoded and verified.
-    Verified { flow: PresentationFlow<NotAuthorized> },
+    Verified {
+        flow: PresentationFlow<NotAuthorized>,
+    },
 
     /// Credentials have been identified that match the request.
-    Credentials { flow: PresentationFlow<NotAuthorized>, credentials: Vec<Credential> },
+    Credentials {
+        flow: PresentationFlow<NotAuthorized>,
+        credentials: Vec<Credential>,
+    },
 
     /// The user has approved the presentation.
-    Approved { flow: PresentationFlow<Authorized>, credentials: Vec<Credential> },
+    Approved {
+        flow: PresentationFlow<Authorized>,
+        credentials: Vec<Credential>,
+    },
 }

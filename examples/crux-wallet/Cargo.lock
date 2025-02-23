@@ -3395,6 +3395,7 @@ dependencies = [
  "futures",
  "insta",
  "lazy_static",
+ "multibase",
  "rand 0.8.5",
  "serde",
  "serde_bytes",

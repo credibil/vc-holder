@@ -126,7 +126,8 @@ pub async fn metadata(
     response.credential_issuer.deferred_credential_endpoint =
         Some(format!("{}/deferred", state.external_address));
     // Display image file URLs
-    let mut updated_supported = response.credential_issuer.credential_configurations_supported.clone();
+    let mut updated_supported =
+        response.credential_issuer.credential_configurations_supported.clone();
     for (id, config) in &response.credential_issuer.credential_configurations_supported {
         let mut updated_config = config.clone();
         if let Some(config_display) = &config.display {
@@ -165,46 +166,53 @@ pub async fn metadata(
 // DID document endpoint
 #[axum::debug_handler]
 pub async fn did(State(state): State<AppState>) -> Result<AppJson<Value>, AppError> {
+    let val = did_json(&state.external_address)?;
+    Ok(AppJson(val))
+}
+
+// DID document as JSON to be used in handler or can be called directly (see
+// verifier provider for example).
+pub fn did_json(external_address: &str) -> anyhow::Result<Value> {
     let did_json = r#"{
-    "@context": [
-        "https://www.w3.org/ns/did/v1",
-        "https://w3id.org/security/data-integrity/v1"
-    ],
-    "id": "did:web:credibil.io",
-    "verificationMethod": [
-        {
-        "id": "did:web:credibil.io#key-0",
-        "controller": "did:web:credibil.io",
-        "type": "Multikey",
-        "publicKeyMultibase": "z6MkqvVfz2B1brqmXTWgMAQQZXwgy3h5Xx4iJ5yvfnr4UGhP"
-        }
-    ],
-    "authentication": [
-        "did:web:credibil.io#key-0"
-    ],
-    "assertionMethod": [
-        "did:web:credibil.io#key-0"
-    ],
-    "keyAgreement": [
-        {
-        "id": "did:web:credibil.io#key-1",
-        "controller": "did:web:credibil.io",
-        "type": "Multikey",
-        "publicKeyMultibase": "z6LSjMo5EKYp5HujrgoRCSmTA1w3ei6cNVQpP7dFhcu65PTc"
-        }
-    ],
-    "capabilityInvocation": [
-        "did:web:credibil.io#key-0"
-    ],
-    "capabilityDelegation": [
-        "did:web:credibil.io#key-0"
-    ]
-    }"#;
-    let parts = state.external_address.split("//").collect::<Vec<&str>>();
+        "@context": [
+            "https://www.w3.org/ns/did/v1",
+            "https://w3id.org/security/data-integrity/v1"
+        ],
+        "id": "did:web:credibil.io",
+        "verificationMethod": [
+            {
+            "id": "did:web:credibil.io#key-0",
+            "controller": "did:web:credibil.io",
+            "type": "Multikey",
+            "publicKeyMultibase": "z6MkqvVfz2B1brqmXTWgMAQQZXwgy3h5Xx4iJ5yvfnr4UGhP"
+            }
+        ],
+        "authentication": [
+            "did:web:credibil.io#key-0"
+        ],
+        "assertionMethod": [
+            "did:web:credibil.io#key-0"
+        ],
+        "keyAgreement": [
+            {
+            "id": "did:web:credibil.io#key-1",
+            "controller": "did:web:credibil.io",
+            "type": "Multikey",
+            "publicKeyMultibase": "z6LSjMo5EKYp5HujrgoRCSmTA1w3ei6cNVQpP7dFhcu65PTc"
+            }
+        ],
+        "capabilityInvocation": [
+            "did:web:credibil.io#key-0"
+        ],
+        "capabilityDelegation": [
+            "did:web:credibil.io#key-0"
+        ]
+        }"#;
+    let parts = external_address.split("//").collect::<Vec<&str>>();
     let override_domain = *parts.get(1).unwrap_or(&"credibil.io");
     let did_json = did_json.replace("credibil.io", override_domain);
     let val = serde_json::from_str(&did_json).map_err(|e| anyhow!(e))?;
-    Ok(AppJson(val))
+    Ok(val)
 }
 
 // Token endpoint

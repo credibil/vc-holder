@@ -32,7 +32,6 @@ use url::Url;
 pub struct AppState {
     external_address: Cow<'static, str>,
     issuer: Cow<'static, str>,
-    verifier: Cow<'static, str>,
     issuer_provider: provider::issuer::Provider,
     verifier_provider: provider::verifier::Provider,
 }
@@ -52,9 +51,8 @@ async fn main() {
     let app_state = AppState {
         external_address: external_address.clone().into(),
         issuer: issuer.into(),
-        verifier: verifier.into(),
         issuer_provider: provider::issuer::Provider::new(&external_address),
-        verifier_provider: provider::verifier::Provider::new(&external_address),
+        verifier_provider: provider::verifier::Provider::new(&external_address, &verifier),
     };
 
     let cors = CorsLayer::new().allow_methods(Any).allow_origin(Any).allow_headers(Any);

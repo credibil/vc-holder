@@ -4,7 +4,7 @@ import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-const LINK = "https://vercre.io";
+const LINK = "https://credibil.io";
 const LINK_TEXT = "Vercre";
 
 const Footer = () => {

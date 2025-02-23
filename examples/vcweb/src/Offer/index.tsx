@@ -62,7 +62,7 @@ const Offer = () => {
         setProcessing(configId);
         const req: CreateOfferRequest = {
             // eslint-disable-next-line camelcase
-            credential_issuer: "http://vercre.io", // Gets ignored by the sample API.
+            credential_issuer: "http://credibil.io", // Gets ignored by the sample API.
             // eslint-disable-next-line camelcase
             subject_id: "normal_user",
             // eslint-disable-next-line camelcase

@@ -111,7 +111,7 @@ pub async fn create_request(
     }
 
     let request = CreateRequestRequest {
-        client_id: state.verifier.to_string(),
+        client_id: state.external_address.to_string(),
         device_flow: DeviceFlow::CrossDevice, // we will get a URI, not a full request object.
         purpose: req.purpose,
         input_descriptors,
@@ -154,7 +154,7 @@ pub async fn request_object(
     State(state): State<AppState>, Path(object_id): Path<String>,
 ) -> Result<AppJson<RequestObjectResponse>, AppError> {
     let request = RequestObjectRequest {
-        client_id: state.verifier.to_string(),
+        client_id: state.external_address.to_string(),
         id: object_id,
     };
     let response =
@@ -187,39 +187,39 @@ pub async fn did(State(state): State<AppState>) -> Result<AppJson<Value>, AppErr
         "https://www.w3.org/ns/did/v1",
         "https://w3id.org/security/data-integrity/v1"
     ],
-    "id": "did:web:vercre.io:verifier",
+    "id": "did:web:credibil.io:verifier",
     "verificationMethod": [
         {
-        "id": "did:web:vercre.io:verifier#key-0",
-        "controller": "did:web:vercre.io:verifier",
+        "id": "did:web:credibil.io:verifier#key-0",
+        "controller": "did:web:credibil.io:verifier",
         "type": "Multikey",
         "publicKeyMultibase": "z6MkmYiig9PfxhTLrwfV3v8CZxWG3YuTw2Yi5VwzksemRE2V"
         }
     ],
     "authentication": [
-        "did:web:vercre.io:verifier#key-0"
+        "did:web:credibil.io:verifier#key-0"
     ],
     "assertionMethod": [
-        "did:web:vercre.io:verifier#key-0"
+        "did:web:credibil.io:verifier#key-0"
     ],
     "keyAgreement": [
         {
-        "id": "did:web:vercre.io:verifier#key-1",
-        "controller": "did:web:vercre.io:verifier",
+        "id": "did:web:credibil.io:verifier#key-1",
+        "controller": "did:web:credibil.io:verifier",
         "type": "Multikey",
         "publicKeyMultibase": "z6LSmwdnt9ZB4gEYepbUyz897WoKAHKJVR5bi527jg6xwpWr"
         }
     ],
     "capabilityInvocation": [
-        "did:web:vercre.io:verifier#key-0"
+        "did:web:credibil.io:verifier#key-0"
     ],
     "capabilityDelegation": [
-        "did:web:vercre.io:verifier#key-0"
+        "did:web:credibil.io:verifier#key-0"
     ]
     }"#;
     let parts = state.external_address.split("//").collect::<Vec<&str>>();
-    let override_domain = *parts.get(1).unwrap_or(&"vercre.io");
-    let did_json = did_json.replace("vercre.io", override_domain);
+    let override_domain = *parts.get(1).unwrap_or(&"credibil.io");
+    let did_json = did_json.replace("credibil.io", override_domain);
     let val = serde_json::from_str(&did_json).map_err(|e| anyhow!(e))?;
     Ok(AppJson(val))
 }

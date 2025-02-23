@@ -29,6 +29,7 @@ crux_kv.workspace = true
 ed25519-dalek.workspace = true
 futures = { version = "0.3.31", features = ["executor"] }
 lazy_static = "1.5.0"
+multibase = "0.9.1"
 rand = "0.8.5"
 serde.workspace = true
 serde_bytes = "0.11.15"

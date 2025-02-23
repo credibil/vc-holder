@@ -1,13 +1,15 @@
 {
-    "rust-analyzer.linkedProjects": [
-        "Cargo.toml",
-    ],
     // "rust-analyzer.cargo.features": ["issuer", "verifier"],
     // "rust-analyzer.check.features": ["issuer", "verifier"],
     // "lldb.launch.envFile": "${workspaceFolder}/.env",
     // "lldb.launch.env": {
     //     "INSTA_WORKSPACE_ROOT": "${workspaceFolder}",
     // },
+    "rust-analyzer.linkedProjects": [
+        "examples/crux-wallet/Cargo.toml",
+        "examples/tauri-wallet/src-tauri/Cargo.toml",
+        "examples/vcservice/Cargo.toml",
+    ],
     "eslint.workingDirectories": [
         {
             "pattern": "examples/tauri-wallet/"
