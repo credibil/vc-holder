@@ -1,10 +1,9 @@
 //! Signer provider callbacks for creating proofs
 
-use anyhow::bail;
-use base64ct::{Base64UrlUnpadded, Encoding};
-use ed25519_dalek::{ed25519::signature::Signer as _, Signature, SigningKey, VerifyingKey};
-use credibil_holder::did::{CreateOptions, Curve, DidKey, DidOperator, KeyPurpose, KeyType, PublicKeyJwk};
+use ed25519_dalek::{ed25519::signature::Signer as _, Signature, SigningKey};
 use credibil_holder::provider::{Algorithm, Signer};
+
+const ED25519_CODEC: [u8; 2] = [0xed, 0x01];
 
 pub struct SignerProvider {
     signing_key: SigningKey,
@@ -53,44 +52,10 @@ impl SignerProvider {
     /// The verification method the verifier should use to verify the signature.
     pub fn verification_method_sync(&self) -> anyhow::Result<String> {
         let vk = self.signing_key.verifying_key();
-        let op = Operator::new(vk);
-        let options = CreateOptions::default();
-        let did = DidKey::create(&op, options)?;
-        let Some(vm) = did.verification_method else {
-            bail!("no verification methods on DID");
-        };
-        let Some(vm) = vm.first() else {
-            bail!("empty verification methods on DID");
-        };
-        Ok(vm.id.clone())
-    }
-}
-
-struct Operator {
-    verifying_key: VerifyingKey,
-}
-
-impl Operator {
-    pub fn new(verifying_key: VerifyingKey) -> Self {
-        Self {
-            verifying_key,
-        }
-    }
-}
-
-impl DidOperator for Operator {
-    fn verification(&self, purpose: KeyPurpose) -> Option<PublicKeyJwk> {
-        match purpose {
-            KeyPurpose::VerificationMethod => {
-                let key = self.verifying_key.to_bytes().to_vec();
-                Some(PublicKeyJwk {
-                    kty: KeyType::Okp,
-                    crv: Curve::Ed25519,
-                    x: Base64UrlUnpadded::encode_string(&key),
-                    ..Default::default()
-                })
-            }
-            _ => None,
-        }
+        let mut multi_bytes = ED25519_CODEC.to_vec();
+        multi_bytes.extend_from_slice(&vk.to_bytes());
+        let verifying_multi = multibase::encode(multibase::Base::Base58Btc, &multi_bytes);
+        let did = format!("did:key:{verifying_multi}#{verifying_multi}");
+        Ok(did)
     }
 }

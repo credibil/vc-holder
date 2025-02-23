@@ -556,6 +556,7 @@ impl Model {
         }
     }
 
+
     /// The presentation request has been decoded and verified.
     pub fn presentation_request_verified(
         &self, request: &VerifierRequestObject,

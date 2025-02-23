@@ -14,7 +14,7 @@ use ed25519_dalek::{SecretKey, Signer as _, SigningKey};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
-const ISSUER_DID: &str = "did:web:vercre.io";
+const ISSUER_DID: &str = "did:web:credibil.io";
 const ISSUER_VERIFY_KEY: &str = "key-0";
 const ISSUER_SECRET: &str = "4gSrKc8qg5Hib0atH9QtLEZOuMgkuP9vnxTij8ekrJs";
 
@@ -118,8 +118,8 @@ impl Signer for Provider {
 
     async fn verification_method(&self) -> Result<String> {
         let parts = self.external_address.split("//").collect::<Vec<&str>>();
-        let override_domain = *parts.get(1).unwrap_or(&"vercre.io");
-        let did = ISSUER_DID.replace("vercre.io", override_domain);
+        let override_domain = *parts.get(1).unwrap_or(&"credibil.io");
+        let did = ISSUER_DID.replace("credibil.io", override_domain);
         Ok(format!("{did}#{ISSUER_VERIFY_KEY}"))
     }
 }

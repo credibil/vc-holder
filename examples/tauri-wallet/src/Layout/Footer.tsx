@@ -29,11 +29,11 @@ const Footer = () => {
                     &copy;  {new Date().getFullYear()}&nbsp;
                     <Link
                         color="inherit"
-                        href="https://www.vercre.io/"
+                        href="https://www.credibil.io/"
                         rel="noopener"
                         target="_blank"
                         underline="hover"
-                        onClick={() => open("https://www.vercre.io/")}
+                        onClick={() => open("https://www.credibil.io/")}
                     >
                         Vercre
                     </Link>

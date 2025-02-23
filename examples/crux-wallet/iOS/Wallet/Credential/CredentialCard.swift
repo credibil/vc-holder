@@ -48,9 +48,9 @@ struct CredentialCard: View {
         .init(name: "Given name", value: "Normal"),
     ]
     let credential = Credential(
-        id: "http://vercre.io/credentials/EmployeeIDCredential",
-        issuer: "http://vercre.io",
-        issuer_name: "Vercre",
+        id: "http://credibil.io/credentials/EmployeeIDCredential",
+        issuer: "http://credibil.io",
+        issuer_name: "Credibil",
         issued: "encoded",
         type: ["VerifiableCredential", "EmployeeIDCredential"],
         format: "jwt_vc_json",
@@ -59,7 +59,7 @@ struct CredentialCard: View {
         valid_from: "",
         valid_until: "",
         name: "Employee ID",
-        description: "Vercre employee ID credential",
+        description: "Credibil employee ID credential",
         background_color: "#323ed2",
         text_color: "#ffffff",
         logo: ImageData(
