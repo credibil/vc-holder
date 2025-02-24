@@ -31,7 +31,7 @@ const Splash = () => {
                 overflow: 'hidden',
             }}
         >
-            <Typography variant="h1">Vercre Wallet</Typography>
+            <Typography variant="h1">Credibil Wallet</Typography>
         </Container>
     );
 };

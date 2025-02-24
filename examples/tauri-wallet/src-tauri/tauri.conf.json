@@ -1,7 +1,7 @@
 {
-  "productName": "Vercre Wallet",
+  "productName": "Credibil Wallet",
   "version": "0.1.0",
-  "identifier": "io.vercre.wallet",
+  "identifier": "io.credibil.wallet",
   "app": {
     "macOSPrivateApi": false,
     "security": {
@@ -17,7 +17,7 @@
     },
     "windows": [
       {
-        "title": "Vercre Wallet",
+        "title": "Credibil Wallet",
         "width": 800,
         "height": 600,
         "resizable": true,
@@ -42,7 +42,7 @@
       "icons/icon.ico"
     ],
     "iOS": {
-      "developmentTeam": "Vercre"
+      "developmentTeam": "Credibil"
     },
     "android": {
       "minSdkVersion": 24

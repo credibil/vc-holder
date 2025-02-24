@@ -1,6 +1,6 @@
 //
 //  RoundedRectLabel.swift
-//  VercreWallet
+//  Wallet
 //
 //  Created by Andrew Goldie on 23/10/2024.
 //

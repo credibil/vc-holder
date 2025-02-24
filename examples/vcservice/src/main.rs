@@ -1,6 +1,8 @@
 //! # Example Issuer and Verifier Service
 //!
-//! Simple, hard-coded service useful for demonstrating the Vercre wallet.
+//! Simple, hard-coded service useful for demonstrating the Credibil example
+//! wallets.
+//! 
 //! Assumes pre-authorized, issuer-initiated flow only.
 
 mod handler;

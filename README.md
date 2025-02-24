@@ -15,7 +15,7 @@ The `examples` directory has some basic services for issuance and verification w
 
 ## Additional
 
-[![ci](https://github.com/credibil/holder/actions/workflows/ci.yaml/badge.svg)](https://github.com/vercre/holder/actions/workflows/ci.yaml)
+[![ci](https://github.com/credibil/holder/actions/workflows/ci.yaml/badge.svg)](https://github.com/credibil/holder/actions/workflows/ci.yaml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE-MIT)
 [![License](https://img.shields.io/badge/license-Apache-blue.svg)](./LICENSE-APACHE)
 

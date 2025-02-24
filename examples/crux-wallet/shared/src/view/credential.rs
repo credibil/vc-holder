@@ -25,8 +25,8 @@ impl From<(String, String)> for ClaimView {
 
 /// View model for a verifiable credential.
 ///
-/// Matches the `Credential` model from the `vercre-holder` crate as closely as
-/// possible but caters for ease of code generation for shells.
+/// Matches the `Credential` model from the `credibil-holder` crate as closely
+/// as possible but caters for ease of code generation for shells.
 #[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 pub struct Credential {
     /// Credential `id` is the credential's unique identifier
@@ -266,17 +266,17 @@ mod tests {
             "display": [
                 {
                     "name": "Employee ID",
-                    "description": "Vercre employee ID credential",
+                    "description": "Credibil employee ID credential",
                     "locale": "en-NZ",
                     "logo": {
-                        "uri": "https://vercre.github.io/assets/employee.png",
-                        "alt_text": "Vercre Logo"
+                        "uri": "https://credibil.io/assets/employee.png",
+                        "alt_text": "Employee ID Logo"
                     },
                     "text_color": "#ffffff",
                     "background_color": "#323ed2",
                     "background_image": {
-                        "uri": "https://vercre.github.io/assets/employee-background.png",
-                        "alt_text": "Vercre Background"
+                        "uri": "https://credibil.io/assets/employee-background.png",
+                        "alt_text": "Employee Background"
                     }
                 }
             ],

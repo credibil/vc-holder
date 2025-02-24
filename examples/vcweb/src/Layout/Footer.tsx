@@ -5,13 +5,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 const LINK = "https://credibil.io";
-const LINK_TEXT = "Vercre";
+const LINK_TEXT = "Credibil";
 
 const Footer = () => {
     return (
         <AppBar
             elevation={0}
-            color="secondary"
+            color="primary"
             component="footer"
             position="fixed"
             sx={{

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-import logo from "./fulllogo.svg";
+import logo from "./FullLogo.svg";
 
 const FullLogo = () => {
     return (
@@ -8,7 +8,7 @@ const FullLogo = () => {
             p={4}
             sx={{
                 alignItems: "center",
-                backgroundColor: theme => theme.palette.secondary.main,
+                backgroundColor: theme => theme.palette.background.default,
                 borderRadius: "8px",
                 display: "flex",
                 height: "100%",
@@ -18,7 +18,7 @@ const FullLogo = () => {
             <Box
                 component="img"
                 src={logo}
-                alt="Vercre Veriable Credentials"
+                alt="Credibil Veriable Credentials"
                 sx={{
                     width: 300,
                 }}

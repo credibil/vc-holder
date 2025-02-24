@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import Logo from "./Logo";
+import Logo, {LogoProps} from "./Logo";
 
 export type HeaderProps = {
     action?: JSX.Element;
@@ -19,11 +19,11 @@ const Header = (props: HeaderProps) => {
     return (
         <AppBar
             elevation={0}
-            color="secondary"
+            color="primary"
             position="fixed"
         >
             <Toolbar>
-                {action || <Logo />}
+                {action || <Logo inverse={true} />}
                 <Box sx={{ flexGrow: 1 }}>
                     <Typography variant="h4" sx={{ px: 3 }}>{title}</Typography>
                 </Box>

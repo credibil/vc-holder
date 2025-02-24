@@ -17,7 +17,7 @@ pub struct GreetingResponse {
 #[axum::debug_handler]
 pub async fn index(State(state): State<AppState>) -> Result<AppJson<GreetingResponse>, AppError> {
     Ok(AppJson(GreetingResponse {
-        message: "Vercre Demonstration Service".into(),
+        message: "Credibil Demonstration Service".into(),
         address: state.external_address.into(),
     }))
 }
