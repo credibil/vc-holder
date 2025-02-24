@@ -1,0 +1,9 @@
+@font-face{
+	font-family: "GT-Ultra-Median-Light";
+	src: url("/GT-Ultra-Median-Light.woff2") format("woff2");
+}
+
+@font-face{
+	font-family:"GT-Ultra-Standard-Light";
+    src: url("/GT-Ultra-Standard-Light.woff2") format("woff2");
+}

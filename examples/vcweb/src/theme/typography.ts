@@ -16,63 +16,55 @@ declare module "@mui/material/Typography" {
     }
 }
 
-const systemFont = [
-    "Inter",
-    "sans-serif",
-].join(",");
-
 export const typography = {
-    fontFamily: systemFont,
+    fontFamily: "GT-Ultra-Standard-Light",
     h1: {
-        fontSize: "2rem",
-        fontWeight: 700,
+        fontFamily: "GT-Ultra-Median-Light",
+        fontSize: "3.5rem",
         lineHeight: 1.167,
         letterSpacing: "-0.0625rem",
     },
     h2: {
+        fontFamily: "GT-Ultra-Median-Light",
         fontSize: "3.125rem",
-        fontWeight: 400,
         lineHeight: 1.526,
         letterSpacing: "-0.0625rem",
     },
     h3: {
+        fontFamily: "GT-Ultra-Median-Light",
         fontSize: "2.5rem",
-        fontWeight: 500,
         lineHeight: 1.375,
     },
     h4: {
+        fontFamily: "GT-Ultra-Median-Light",
         fontSize: "1.625rem",
-        fontWeight: 400,
         lineHeight: 1.125,
     },
     h5: {
-        fontSize: "1.25rem",
+        fontFamily: "GT-Ultra-Median-Light",
         fontWeight: 700,
+        fontSize: "1.25rem",
         lineHeight: 1.375,
     },
     h6: {
+        fontFamily: "GT-Ultra-Median-Light",
         fontSize: "1.125rem",
-        fontWeight: 500,
         lineHeight: 1.375,
     },
     subtitle1: {
         fontSize: "1rem",
-        fontWeight: 700,
         lineHeight: 1.375,
     },
     subtitle2: {
         fontSize: "0.875rem",
-        fontWeight: 500,
         lineHeight: 1.375,
     },
     body1: {
         fontSize: "1.125rem",
-        fontWeight: 400,
         lineHeight: 1.4,
     },
     body2: {
         fontSize: "1.125rem",
-        fontWeight: 300,
         lineHeight: 1.11,
     },
     button: {
@@ -83,10 +75,8 @@ export const typography = {
     },
     caption: {
         fontSize: "0.825rem",
-        fontWeight: 300,
     },
     fineprint: {
         fontSize: "0.75rem",
-        fontWeight: 200,
     },
 };

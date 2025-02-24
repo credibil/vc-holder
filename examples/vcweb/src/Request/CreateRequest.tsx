@@ -33,10 +33,9 @@ const CreateRequest = (props: CreateRequestProps) => {
     return (
         <Box
             sx={{
-                border: "solid 1px",
                 borderRadius: "8px",
-                borderColor: theme => disabled ? theme.palette.action.disabled : theme.palette.primary.light,
-                p: 2,
+                p: 6,
+                backgroundColor: theme => theme.palette.background.paper,
             }}
         >
             <Stack spacing={2}>
