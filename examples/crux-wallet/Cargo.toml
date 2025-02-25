@@ -27,7 +27,7 @@ nursery = "warn"
 pedantic = "warn"
 
 [workspace.dependencies]
-anyhow = "1.0.95"
+anyhow = "1.0.96"
 base64ct = {version = "1.6.0", features = ["std"]}
 chrono = {version = "0.4.39", features = ["serde"]}
 credibil-holder = { path = "../.." }
