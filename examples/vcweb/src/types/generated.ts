@@ -92,5 +92,7 @@ export interface GenerateRequestResponse {
 	request_uri: string;
 	/** QR code for the request URI. */
 	qr_code: string;
+	/** URL-encoded URI of the authorization request. */
+	encoded_uri: string;
 }
 

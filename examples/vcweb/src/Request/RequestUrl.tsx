@@ -2,18 +2,13 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import TxCode from "../Offer/TxCode";
-
-export type OfferJsonProps = {
+export type RequestUrlProps = {
     title?: string;
-    offer: string;
-    pin?: string;
+    url: string;
 };
 
-const OfferJson = (props: OfferJsonProps) => {
-    const { title, offer, pin } = props;
-
-    const data = JSON.parse(offer);
+const RequestUrl = (props: RequestUrlProps) => {
+    const { title, url } = props;
 
     return (
         <Box
@@ -26,27 +21,29 @@ const OfferJson = (props: OfferJsonProps) => {
             <Stack>
                 {title && <Typography variant="h5" gutterBottom>{title}</Typography>}
                 <Typography variant="body2" gutterBottom>
-                    Copy the credential offer content into your wallet app.
+                    Copy the presentation request content into your wallet app.
                 </Typography>
                 <Box sx={{
                     display: "flex", justifyContent: "center"
                 }}>
                     < Box
-                        component="pre"
+                        component="div"
                         sx={{
                             fontSize: "0.8rem",
-                            overflow: "scroll",
+                            overflow: "wrap",
+                            overflowWrap: "break-word",
+                            wordWrap: "break-word",
+                            paddingY: 2,
                         }}
                     >
                         <Box component="code">
-                            {JSON.stringify(data, null, 2)}
+                            {url}
                         </Box>
                     </Box>
                 </Box>
-                {pin && <TxCode pin={pin} />}
             </Stack >
         </Box >
     );
 };
 
-export default OfferJson;
+export default RequestUrl;

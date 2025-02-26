@@ -4,11 +4,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import Stack from "@mui/material/Stack";
+import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { useSetRecoilState } from "recoil";
 
 import CreateRequest from "./CreateRequest";
+import RequestUrl from "./RequestUrl";
 import { instanceOfErrorResponse } from "../api";
 import { createRequest } from "../api/verification";
 import FullLogo from "../components/FullLogo";
@@ -24,6 +26,8 @@ type SupportedCredential = "EmployeeID_JWT" | "Developer_JWT";
 const Request = () => {
     const [processing, setProcessing] = useState<SupportedCredential | null>(null);
     const [qrCode, setQrCode] = useState<string>("");
+    const [requestUrl, setRequestUrl] = useState<string>("");
+    const [showUrl, setShowUrl] = useState(false);
     const setHeader = useSetRecoilState(headerState);
 
     // Translate some hard-coded values for the supported credentials.
@@ -94,6 +98,7 @@ const Request = () => {
             } else {
                 const res = response as GenerateRequestResponse;
                 setQrCode(res.qr_code);
+                setRequestUrl(res.encoded_uri);
             }
         },
         onError: (err) => {
@@ -114,6 +119,7 @@ const Request = () => {
 
     const handleReset = () => {
         setProcessing(null);
+        setShowUrl(false);
     };
 
     return (
@@ -131,7 +137,14 @@ const Request = () => {
             <Grid container spacing={4}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     {processing === "EmployeeID_JWT"
-                        ? <QrCode title="Employee ID" type="verify" image={qrCode} />
+                        ? <>
+                        {
+                            showUrl
+                                ? <RequestUrl title="Employee ID" url={requestUrl} />
+                                : <QrCode title="Employee ID" type="verify" image={qrCode} />
+                        }
+                            <QrOrUrl checked={showUrl} onChange={() => setShowUrl(!showUrl)} />
+                        </>
                         : <CreateRequest
                             configId="EmployeeID_JWT"
                             onCreate={() => handleCreateRequest("EmployeeID_JWT")}
@@ -140,7 +153,14 @@ const Request = () => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     {processing === "Developer_JWT"
-                        ? <QrCode title="Developer" type="verify" image={qrCode} />
+                        ? <>
+                        {
+                            showUrl
+                                ? <RequestUrl title="Developer" url={requestUrl} />
+                                : <QrCode title="Developer" type="verify" image={qrCode} />
+                        }
+                            <QrOrUrl checked={showUrl} onChange={() => setShowUrl(!showUrl)} />
+                        </>
                         : <CreateRequest
                             configId="Developer_JWT"
                             onCreate={() => handleCreateRequest("Developer_JWT")}
@@ -163,5 +183,15 @@ const Request = () => {
         </Stack>
     );
 };
+
+const QrOrUrl = (props: { checked: boolean; onChange: () => void }) => {
+    return (
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+            <Typography variant="body2">QR Code</Typography>
+            <Switch checked={props.checked} onChange={props.onChange} />
+            <Typography variant="body2">Encoded URI</Typography>
+        </Stack>
+    );
+}
 
 export default Request;

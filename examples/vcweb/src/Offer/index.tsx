@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -149,7 +149,7 @@ const Offer = () => {
     );
 };
 
-const QrOrJson = (props: { checked: boolean, onChange: (event: ChangeEvent<HTMLInputElement>) => void }) => {
+const QrOrJson = (props: { checked: boolean, onChange: () => void }) => {
     return (
         <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
             <Typography variant="body2">QR Code</Typography>

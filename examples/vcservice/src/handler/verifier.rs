@@ -78,6 +78,9 @@ pub struct GenerateRequestResponse {
 
     /// QR code for the request URI.
     pub qr_code: String,
+
+    /// URL-encoded URI of the authorization request.
+    pub encoded_uri: String,
 }
 
 // Generate Authorization Request endpoint
@@ -139,10 +142,12 @@ pub async fn create_request(
     response.request_uri = Some(format!("{}/request/{}", state.external_address, request_id));
 
     let qr_code = response.to_qrcode(None)?;
+    let encoded_uri = urlencoding::encode(&request_uri);
 
     let gen_response = GenerateRequestResponse {
         request_uri: request_uri.to_string(),
         qr_code,
+        encoded_uri: encoded_uri.to_string(),
     };
 
     Ok(AppJson(gen_response))

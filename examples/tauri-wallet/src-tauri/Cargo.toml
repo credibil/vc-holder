@@ -35,8 +35,8 @@ tauri-plugin-log = "2.2.1"
 tauri-plugin-shell = "2.2.0"
 tauri-plugin-store = "2.2.0"
 typeshare = "1.0.3"
-urlencoding = "2.1.3"
 credibil-holder.workspace = true
+urlencoding.workspace = true
 
 [dev-dependencies]
 
