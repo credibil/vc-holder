@@ -21,7 +21,7 @@ const RequestUrl = (props: RequestUrlProps) => {
             <Stack>
                 {title && <Typography variant="h5" gutterBottom>{title}</Typography>}
                 <Typography variant="body2" gutterBottom>
-                    Copy the presentation request content into your wallet app.
+                    Copy the presentation request URI into your wallet app.
                 </Typography>
                 <Box sx={{
                     display: "flex", justifyContent: "center"

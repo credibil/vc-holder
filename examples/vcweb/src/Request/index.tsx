@@ -98,7 +98,7 @@ const Request = () => {
             } else {
                 const res = response as GenerateRequestResponse;
                 setQrCode(res.qr_code);
-                setRequestUrl(res.encoded_uri);
+                setRequestUrl(res.request_uri);
             }
         },
         onError: (err) => {
@@ -189,7 +189,7 @@ const QrOrUrl = (props: { checked: boolean; onChange: () => void }) => {
         <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
             <Typography variant="body2">QR Code</Typography>
             <Switch checked={props.checked} onChange={props.onChange} />
-            <Typography variant="body2">Encoded URI</Typography>
+            <Typography variant="body2">URI</Typography>
         </Stack>
     );
 }
