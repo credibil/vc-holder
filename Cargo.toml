@@ -37,7 +37,7 @@ resolver = "2"
 
 [workspace.package]
 authors = ["Credibil"]
-categories = ["data", "messaging", "didcomm", "identity", "verifiable"]
+categories = ["authentication", "cryptography", "data-structures"]
 edition = "2024"
 exclude = [".*", "/docs", "snapshots/"]
 homepage = "https://credibil.io"
