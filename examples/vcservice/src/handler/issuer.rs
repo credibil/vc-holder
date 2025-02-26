@@ -12,8 +12,7 @@ use axum_extra::TypedHeader;
 use axum_extra::headers::Authorization;
 use axum_extra::headers::authorization::Bearer;
 use credibil_vc::issuer::{
-    CredentialDisplay, CredentialRequest, CredentialResponse, Image, MetadataRequest,
-    MetadataResponse, OfferType, SendType, TokenRequest, TokenResponse,
+    CredentialDisplay, CredentialRequest, CredentialResponse, Image, MetadataRequest, MetadataResponse, OfferType, SendType, TokenRequest, TokenResponse
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -53,6 +52,9 @@ pub struct CreateOfferResponse {
     /// PIN code required to accept the credential offer.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tx_code: Option<String>,
+
+    /// Contents of the offer as a JSON string.
+    pub offer_json: String,
 }
 
 // Create a credential offer
@@ -92,10 +94,11 @@ pub async fn create_offer(
     offer.credential_issuer = state.external_address.to_string();
 
     let qr_code = offer.to_qrcode("openid-credential-offer://credential_offer=")?;
-
+    let offer_json = serde_json::to_string(&offer).map_err(|e| anyhow!(e))?;
     let rsp = CreateOfferResponse {
         qr_code,
         tx_code: response.tx_code,
+        offer_json,
     };
 
     Ok(AppJson(rsp))
