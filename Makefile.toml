@@ -83,22 +83,19 @@ command = "cargo"
 args = ["semver-checks"]
 install_crate = "cargo-semver-checks"
 
-[tasks.pre-pub]
-run_task = { name = ["pre-pub-dwn"], parallel = true }
-
-[tasks.pre-pub-dwn]
+[tasks.prepub]
 command = "cargo"
-args = ["publish", "--allow-dirty", "--dry-run", "--package", "dwn-node"]
+args = ["publish", "--allow-dirty", "--dry-run", "--all-features"]
 
-# args = release level: one of `release`, `major`, `minor`, `patch`, `alpha`, `beta`, `rc`
-[tasks.release]
+# args: one of `release`, `major`, `minor`, `patch`, `alpha`, `beta`, `rc`
+[tasks.dryrun]
 command = "cargo"
-args = ["release", "${@}"]
+args = ["release", "${@}", "--all-features"]
 install_crate = "cargo-release"
 
-[tasks.publish]
+[tasks.release]
 command = "cargo"
-args = ["release", "${@}", "--execute"]
+args = ["release", "${@}", "--execute", "--all-features"]
 install_crate = "cargo-release"
 
 # -----------------------------------------------------------------------------
