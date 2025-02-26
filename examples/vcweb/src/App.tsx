@@ -3,6 +3,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
+import './index.css';
 import Layout from "./Layout";
 import Offer from "./Offer";
 import Request from "./Request";

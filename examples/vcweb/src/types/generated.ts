@@ -25,6 +25,8 @@ export interface CreateOfferResponse {
 	qr_code: string;
 	/** PIN code required to accept the credential offer. */
 	tx_code?: string;
+	/** Contents of the offer as a JSON string. */
+	offer_json: string;
 }
 
 /** Error response. */

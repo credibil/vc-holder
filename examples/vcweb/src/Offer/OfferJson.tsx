@@ -4,15 +4,16 @@ import Typography from "@mui/material/Typography";
 
 import TxCode from "../Offer/TxCode";
 
-export type QrCodeProps = {
+export type OfferJsonProps = {
     title?: string;
-    type: "issue" | "verify";
-    image: string;
+    offer: string;
     pin?: string;
 };
 
-const QrCode = (props: QrCodeProps) => {
-    const { title, type, image, pin } = props;
+const OfferJson = (props: OfferJsonProps) => {
+    const { title, offer, pin } = props;
+
+    const data = JSON.parse(offer);
 
     return (
         <Box
@@ -25,22 +26,22 @@ const QrCode = (props: QrCodeProps) => {
             <Stack>
                 {title && <Typography variant="h5" gutterBottom>{title}</Typography>}
                 <Typography variant="body2" gutterBottom>
-                    {type === "issue"
-                        ? "Scan the QR code with a wallet app to view the credential offer."
-                        : "Scan the QR code to request the presentation of a credential from a wallet app."
-                    }
+                    Copy the credential offer content into your wallet app.
                 </Typography>
                 <Box sx={{
                     display: "flex", justifyContent: "center"
                 }}>
                     < Box
-                        component="img"
-                        src={image}
-                        alt="QR Code"
+                        component="pre"
                         sx={{
-                            maxWidth: 240,
+                            fontSize: "0.8rem",
+                            overflow: "scroll",
                         }}
-                    />
+                    >
+                        <Box component="code">
+                            {JSON.stringify(data, null, 2)}
+                        </Box>
+                    </Box>
                 </Box>
                 {pin && <TxCode pin={pin} />}
             </Stack >
@@ -48,4 +49,4 @@ const QrCode = (props: QrCodeProps) => {
     );
 };
 
-export default QrCode;
+export default OfferJson;

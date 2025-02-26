@@ -35,7 +35,7 @@ const Footer = () => {
                         underline="hover"
                         onClick={() => open("https://www.credibil.io/")}
                     >
-                        Vercre
+                        Credibil
                     </Link>
                 </Typography>
             </Toolbar>

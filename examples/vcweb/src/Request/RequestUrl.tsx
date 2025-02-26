@@ -2,17 +2,13 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import TxCode from "../Offer/TxCode";
-
-export type QrCodeProps = {
+export type RequestUrlProps = {
     title?: string;
-    type: "issue" | "verify";
-    image: string;
-    pin?: string;
+    url: string;
 };
 
-const QrCode = (props: QrCodeProps) => {
-    const { title, type, image, pin } = props;
+const RequestUrl = (props: RequestUrlProps) => {
+    const { title, url } = props;
 
     return (
         <Box
@@ -25,27 +21,29 @@ const QrCode = (props: QrCodeProps) => {
             <Stack>
                 {title && <Typography variant="h5" gutterBottom>{title}</Typography>}
                 <Typography variant="body2" gutterBottom>
-                    {type === "issue"
-                        ? "Scan the QR code with a wallet app to view the credential offer."
-                        : "Scan the QR code to request the presentation of a credential from a wallet app."
-                    }
+                    Copy the presentation request URI into your wallet app.
                 </Typography>
                 <Box sx={{
                     display: "flex", justifyContent: "center"
                 }}>
                     < Box
-                        component="img"
-                        src={image}
-                        alt="QR Code"
+                        component="div"
                         sx={{
-                            maxWidth: 240,
+                            fontSize: "0.8rem",
+                            overflow: "wrap",
+                            overflowWrap: "break-word",
+                            wordWrap: "break-word",
+                            paddingY: 2,
                         }}
-                    />
+                    >
+                        <Box component="code">
+                            {url}
+                        </Box>
+                    </Box>
                 </Box>
-                {pin && <TxCode pin={pin} />}
             </Stack >
         </Box >
     );
 };
 
-export default QrCode;
+export default RequestUrl;

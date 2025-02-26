@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - 
 
-## [v0.1.0](https://github.com/credibil/holder/releases/tag/credibil-holder-v0.1.0) - 2024-08-08
+## [v0.1.0](https://github.com/credibil/holder/releases/tag/credibil-holder-v0.1.0) - 2024-08-26
 
 ### Breaking changes
 

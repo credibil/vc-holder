@@ -1,6 +1,6 @@
 //
 //  DetailItem.swift
-//  VercreWallet
+//  CredibilWallet
 //
 //  Created by Andrew Goldie on 05/11/2024.
 //

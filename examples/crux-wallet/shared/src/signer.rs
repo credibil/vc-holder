@@ -18,7 +18,7 @@ impl SignerProvider {
     }
 }
 
-/// Implementation of the `vercre-infosec::Signer` traits.
+/// Implementation of the `credibil-infosec::Signer` traits.
 impl Signer for SignerProvider {
     /// Sign is a convenience method for infallible Signer implementations.
     async fn sign(&self, msg: &[u8]) -> Vec<u8> {

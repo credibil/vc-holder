@@ -13,10 +13,11 @@ use credibil_holder::provider::{
     Algorithm, DidResolver, Document, HolderProvider, Result, Signer, StateStore,
 };
 use credibil_holder::test_utils::store::keystore::HolderKeystore;
-use credibil_holder::test_utils::store::resolver;
 use futures::lock::Mutex;
+use http::header::ACCEPT;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
+use tauri_plugin_http::reqwest;
 
 #[derive(Clone, Debug)]
 pub struct Provider {
@@ -60,7 +61,16 @@ impl StateStore for Provider {
 
 impl DidResolver for Provider {
     async fn resolve(&self, url: &str) -> anyhow::Result<Document> {
-        resolver::resolve_did(url).await
+        let client = reqwest::Client::new();
+        let result = client.get(url).header(ACCEPT, "application/json").send().await?;
+        let doc = match result.json::<Document>().await {
+            Ok(doc) => doc,
+            Err(e) => {
+                log::error!("Error resolving DID document: {}", e);
+                return Err(e.into());
+            }
+        };
+        Ok(doc)
     }
 }
 

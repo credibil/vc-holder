@@ -4,11 +4,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import Stack from "@mui/material/Stack";
+import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { useSetRecoilState } from "recoil";
 
 import CreateOffer from "./CreateOffer";
+import OfferJson from "./OfferJson";
 import { instanceOfErrorResponse } from "../api";
 import { createOffer } from "../api/issuance";
 import FullLogo from "../components/FullLogo";
@@ -20,6 +22,8 @@ const Offer = () => {
     const [processing, setProcessing] = useState<"EmployeeID_JWT" | "Developer_JWT" | null>(null);
     const [pin, setPin] = useState<string>("");
     const [qrCode, setQrCode] = useState<string>("");
+    const [offerJson, setOfferJson] = useState<string>("");
+    const [showJson, setShowJson] = useState(false);
     const setHeader = useSetRecoilState(headerState);
 
     useEffect(() => {
@@ -50,6 +54,7 @@ const Offer = () => {
                 const res = response as CreateOfferResponse;
                 setQrCode(res.qr_code);
                 setPin(res.tx_code || "");
+                setOfferJson(res.offer_json);
             }
         },
         onError: (err) => {
@@ -78,6 +83,7 @@ const Offer = () => {
     const handleReset = () => {
         setProcessing(null);
         setPin("");
+        setShowJson(false);
     };
 
     return (
@@ -94,7 +100,14 @@ const Offer = () => {
             <Grid container spacing={4}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     {processing === "EmployeeID_JWT"
-                        ? <QrCode title="Employee ID" type="issue" image={qrCode} pin={pin} />
+                        ? <>
+                        {
+                            showJson
+                                ? <OfferJson title="Employee ID" offer={offerJson} pin={pin} />
+                                : <QrCode title="Employee ID" type="issue" image={qrCode} pin={pin} />
+                        }
+                            <QrOrJson checked={showJson} onChange={() => setShowJson(!showJson)} />
+                        </>
                         : <CreateOffer
                             configId="EmployeeID_JWT"
                             disabled={processing !== null}
@@ -104,7 +117,14 @@ const Offer = () => {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     {processing === "Developer_JWT"
-                        ? <QrCode title="Developer" type="issue" image={qrCode} pin={pin} />
+                        ? <>
+                        {
+                            showJson
+                                ? <OfferJson title="Developer" offer={offerJson} pin={pin} />
+                                : <QrCode title="Developer" type="issue" image={qrCode} pin={pin} />
+                        }
+                            <QrOrJson checked={showJson} onChange={() => setShowJson(!showJson)} />
+                        </>
                         : < CreateOffer
                             configId="Developer_JWT"
                             disabled={processing !== null}
@@ -128,5 +148,15 @@ const Offer = () => {
         </Stack >
     );
 };
+
+const QrOrJson = (props: { checked: boolean, onChange: () => void }) => {
+    return (
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+            <Typography variant="body2">QR Code</Typography>
+            <Switch checked={props.checked} onChange={props.onChange} />
+            <Typography variant="body2">JSON</Typography>
+        </Stack>
+    );
+}
 
 export default Offer;

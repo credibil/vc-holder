@@ -37,3 +37,4 @@ tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter", "fmt"] }
 typeshare.workspace = true
 url = "2.5.4"
+urlencoding.workspace = true

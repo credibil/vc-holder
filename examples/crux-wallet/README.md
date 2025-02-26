@@ -1,12 +1,18 @@
-# Credibil Crux Wallet
+# Credibil Example Crux Wallet
 
 The Credibil Crux Wallet is a simple example of a wallet that can be used to receive, store and present Verifiable Credentials. It is a demonstration of the interactions between a wallet and issuance service that conforms to [OpenID for Verifiable Credential Issuance](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html) and a verification service that conforms to [OpenID for Verifiable Presentations](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html).
 
-A conformant issuer service can be constructed using the `credibil-vc` crate with `issuer` feature, and a conformant verification service can be constructed using the `credibil-vc` crate with `verifier` feature. This wallet is built using the `credibil-holder` crate which provides a set of convenient data types and functions for constructing a wallet or similar holder agent. The `credibil-holder` crate and this wallet, while adhering to the OpenID standards for issuance and presentation flows do not conform internally to any standards but simply provide a "for-instance" example you may wish to use to influence your own wallet project for use with standards-compliant issuers and verifiers. See the open source [`credibil-vc`](https://github.com/credibil/vc) repository for details.
+A conformant issuer service can be constructed using the `credibil-vc` crate with `issuer` feature, and a conformant verification service can be constructed using the `credibil-vc` crate with `verifier` feature. The examples folder provides a simple `vcservice` that does this (issuer and verifier) in a single service that can be used with this wallet example.
+
+This wallet is built using the `credibil-holder` crate which provides a set of convenient data types and functions for constructing a wallet or similar holder agent. The `credibil-holder` crate and this wallet, while adhering to the OpenID standards for issuance and presentation flows do not conform internally to any standards but simply provide a "for-instance" example you may wish to use to influence your own wallet project for use with standards-compliant issuers and verifiers. See the open source [`credibil-vc`](https://github.com/credibil/vc) repository for details.
 
 ## Multiplatform with Crux
 
 This example is built using the [Crux](https://github.com/redbadger/crux) framework which allows for targeting multiple platforms with a single codebase. The wallet is currently built for the iOS platforms and we welcome contributions to add other shells such as Android, desktop and web.
+
+## Separate Rust Workspace
+
+In order for the FFI generation to adhere to its conventions without getting tangled with the main workspace for this repository, the `crux-wallet` example has it's own workspace. So all of the steps outlined below should be relative to the `examples/crux-wallet` directory, not the main repository root.
 
 ## Getting Started
 
@@ -53,7 +59,7 @@ cd iOS
 open Wallet.xcodeproj
 ```
 
-## Sample Issuance and Verification
+### Sample Issuance and Verification
 
 To demonstrate the wallet you can use the services and web applications provided in the `vcservice` and `vcweb` folders.
 
@@ -87,3 +93,4 @@ ngrok http --url <your ngrok url> 8080
 ```
 
 Test ngrok is working by navigating to the root of that URL (browser/curl/Postman, etc) on a separate device and you should receive a valid response.
+

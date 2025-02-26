@@ -26,20 +26,19 @@ const Home = () => {
     return (
         <Stack spacing={4} py={4} id="pageContent">
             <Typography variant="h1">
-                Vercre Wallet Demonstrator
+                Credibil Wallet Demonstrator
             </Typography>
             <Typography variant="body1">
-                This simulated web application aids in the demonstration of the sample Vercre
-                Wallet.
+                This simulated web application aids in the demonstration of the sample Credibil
+                Wallets.
             </Typography>
             <Grid container spacing={4}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                     <Box
                         sx={{
-                            border: "solid 1px",
                             borderRadius: "8px",
-                            borderColor: theme => theme.palette.primary.light,
-                            p: 2,
+                            backgroundColor: theme => theme.palette.background.paper,
+                            p: 6,
                         }}
                     >
                         <Typography variant="h5" gutterBottom>
@@ -64,10 +63,9 @@ const Home = () => {
                 <Grid size={{ xs: 12, sm: 6 }}>
                     <Box
                         sx={{
-                            border: "solid 1px",
                             borderRadius: "8px",
-                            borderColor: theme => theme.palette.primary.light,
-                            p: 2,
+                            backgroundColor: theme => theme.palette.background.paper,
+                            p: 6,
                         }}
                     >
                         <Typography variant="h5" gutterBottom>
