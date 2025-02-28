@@ -106,7 +106,7 @@ pub struct WithToken(TokenResponse);
 pub struct WithoutToken;
 
 impl IssuanceFlow<WithOffer, PreAuthorized, NotAccepted, WithoutToken> {
-    /// Create a new issuance flow with an offer from the issuer.
+    /// Create a new issuance flow with a preauthorized offer from the issuer.
     #[must_use]
     pub fn new(
         client_id: &str, subject_id: &str, issuer: Issuer, offer: CredentialOffer,
@@ -152,7 +152,7 @@ impl IssuanceFlow<WithOffer, AuthCode, NotAccepted, WithoutToken> {
 }
 
 impl<P> IssuanceFlow<WithOffer, P, NotAccepted, WithoutToken> {
-    /// Accept the offer from the issuer.
+    /// Transition the flow state by accepting the offer from the issuer.
     #[must_use]
     pub fn accept(
         self, accepted: &Option<Vec<AuthorizationSpec>>, pin: Option<String>,
@@ -212,7 +212,7 @@ impl<P> IssuanceFlow<WithOffer, P, NotAccepted, WithoutToken> {
 }
 
 impl<P, A, T> IssuanceFlow<WithOffer, P, A, T> {
-    /// Convenience method to get the offer back out that combines with some
+    /// Convenience method to get the offer back out combined with some
     /// issuer metadata to make it easier to present to the holder so they can
     /// choose what credentials and claims to accept.
     #[must_use]
@@ -270,7 +270,7 @@ impl<T> IssuanceFlow<WithOffer, PreAuthorized, Accepted, T> {
 
 impl IssuanceFlow<WithOffer, AuthCode, Accepted, WithoutToken> {
     /// Construct an authorization request, a PKCE code challenge and PKCE
-    /// verifier from the current state and returns the request and verifier.
+    /// verifier from the current state and return the request and verifier.
     ///
     /// # Errors
     /// Will return an error if the offer contains grants other than an
@@ -648,6 +648,8 @@ impl<O, P, A> IssuanceFlow<O, P, A, WithToken> {
 
     /// Add a credential to the issuance state, converting the W3C format to a
     /// convenient wallet format.
+    /// 
+    /// TODO: Add support for formats other than `jwt_vc_json`.
     ///
     /// # Errors
     /// Will return an error if the current state does not contain the metadata

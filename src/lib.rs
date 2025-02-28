@@ -17,7 +17,7 @@
 //! Similar to other general OpenID implementations, the library is based
 //! around orchestrating flows for VC issuance or presentation (to a verifier).
 //!
-//! The client application can interact with types that "remember" the current
+//! The client application can interact with types that remember the current
 //! state of the flow and provide associated methods to use that state to
 //! prepare requests and then update the state with responses.
 //!
@@ -25,7 +25,7 @@
 //! demonstrate how to use the library with all the possible variations of VC
 //! issuance supported by the standards as implemented in `credibil-vc`.
 //!
-//! At present, the only supported credential data type is the
+//! At present, the only supported credential data type in this crate is the
 //! [W3C Verifiable Credentials Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/).
 //!
 //! ** Provider **
