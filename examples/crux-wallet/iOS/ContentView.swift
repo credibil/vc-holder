@@ -13,7 +13,7 @@ struct ContentView: View {
     
     init(core: Core) {
         self.core = core
-        core.update(.ready)
+        core.update(Event.credential(CredentialEvent.ready))
     }
     
     var body: some View {

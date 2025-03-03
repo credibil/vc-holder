@@ -3,6 +3,7 @@ FROM node:23.4-alpine3.20 AS base
 # Install pnpm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME/bin:$PATH"
+RUN npm install -g corepack@latest
 RUN corepack enable
 
 # Copy source code

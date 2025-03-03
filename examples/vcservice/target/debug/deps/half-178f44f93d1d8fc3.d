@@ -1,0 +1,12 @@
+/Users/goldie/git/credibil/holder/examples/vcservice/target/debug/deps/libhalf-178f44f93d1d8fc3.rmeta: /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/lib.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/bfloat.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/bfloat/convert.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16/arch.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16/arch/aarch64.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/leading_zeros.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/slice.rs
+
+/Users/goldie/git/credibil/holder/examples/vcservice/target/debug/deps/half-178f44f93d1d8fc3.d: /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/lib.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/bfloat.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/bfloat/convert.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16/arch.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16/arch/aarch64.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/leading_zeros.rs /Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/slice.rs
+
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/lib.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/bfloat.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/bfloat/convert.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16/arch.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/binary16/arch/aarch64.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/leading_zeros.rs:
+/Users/goldie/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.4.1/src/slice.rs:

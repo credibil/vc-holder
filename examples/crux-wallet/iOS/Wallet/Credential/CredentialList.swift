@@ -27,7 +27,7 @@ struct CredentialList: View {
                     CredentialCard(credential: credentials[index])
                         .stacked(at: credentials.count - index, in: credentials.count)
                         .onTapGesture {
-                            update(.selectCredential(credentials[index].id))
+                            update(Event.credential(CredentialEvent.select(credentials[index].id)))
                         }
                 }
             }

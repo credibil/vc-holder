@@ -47,7 +47,7 @@ struct CredentialDetailView: View {
         .padding()
         .alert("Remove Credential", isPresented: $alertOpen) {
             Button("Delete") {
-                update(.deleteCredential(credential.id))
+                update(Event.credential(CredentialEvent.delete(credential.id)))
                 alertOpen = false
             }
             .foregroundColor(.red)

@@ -5,6 +5,7 @@
 //  Created by Andrew Goldie on 21/11/2024.
 //
 
+import SharedTypes
 import SwiftUI
 
 struct ErrorDetail: View {
@@ -15,7 +16,7 @@ struct ErrorDetail: View {
         VStack {
             Text(message ?? "No current error")
             Button("Dismiss") {
-                update(.ready)
+                update(Event.credential(CredentialEvent.ready))
             }
             .padding()
             .buttonStyle(.borderedProminent)

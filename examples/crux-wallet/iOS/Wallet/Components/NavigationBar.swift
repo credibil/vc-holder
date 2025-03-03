@@ -17,7 +17,7 @@ struct NavigationBar: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar){
             Button(action: {
-                update(.ready)
+                update(Event.credential(CredentialEvent.ready))
             }) {
                 VStack {
                     Image(systemName: "wallet.bifold")

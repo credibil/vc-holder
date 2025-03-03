@@ -3,31 +3,33 @@ name = "vcservice"
 description = "Example service with endpoints for issuer and verifier to demonstrate the Credibil example wallets"
 publish = false
 readme = "README.md"
-authors.workspace = true
-categories.workspace = true
-edition.workspace = true
-exclude.workspace = true
-homepage.workspace = true
-keywords.workspace = true
-license.workspace = true
-repository.workspace = true
-rust-version.workspace = true
-version.workspace = true
+authors = ["Credibil"]
+edition = "2024"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/credibil/holder"
+rust-version = "1.85"
+version = "0.1.0"
 
-[lints]
-workspace = true
+[lints.rust]
+missing_docs = "warn"
+unused_extern_crates = "warn"
+
+[lints.clippy]
+all = "warn"
+nursery = "warn"
+pedantic = "warn"
 
 [dependencies]
-anyhow.workspace = true
+anyhow = "1.0.96"
 axum = { version = "0.7.9", features = ["macros"] }
 axum-extra = { version = "0.9.6", features = ["typed-header"] }
-base64ct.workspace = true
+base64ct = {version = "1.6.0", features = ["std"]}
 bincode = "1.3.3"
 bytes = "1.9.0"
 chrono = { version = "0.4.39", features = ["serde"] }
-credibil-vc.workspace = true
+credibil-vc = {version = "0.1.0", features = ["issuer", "verifier"]}
 dotenv = "0.15.0"
-ed25519-dalek.workspace = true
+ed25519-dalek = { version = "2.1.1", features = ["serde"] }
 serde = { version = "1.0.216", features = ["derive"] }
 serde_json = { version = "1.0.133", features = ["alloc"] }
 tokio ={ version = "1.42.0", features = ["macros", "rt-multi-thread"] }
@@ -35,6 +37,6 @@ tower = "0.5.2"
 tower-http = { version = "0.6.2", features = ["cors", "fs", "set-header", "trace"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter", "fmt"] }
-typeshare.workspace = true
+typeshare = "1.0.3"
 url = "2.5.4"
-urlencoding.workspace = true
+urlencoding = "2.1.3"

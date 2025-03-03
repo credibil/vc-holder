@@ -2,7 +2,7 @@
 # Builder
 #-------------------------------------------------------------------------------
 
-FROM rust:latest AS builder
+FROM rust:1.85.0 AS builder
 
 RUN update-ca-certificates
 
