@@ -27,11 +27,11 @@ use crate::capabilities::key::{KeyStore, KeyStoreCommand, KeyStoreEntry, KeyStor
 use crate::capabilities::sse::ServerSentEvents;
 use crate::capabilities::store::{Catalog, Store, StoreCommand, StoreEntry, StoreError};
 use crate::did_resolver::DidResolverProvider;
-use crate::model::{IssuanceState, Model};
+use crate::model::{IssuanceState, Model, State};
 use crate::signer::SignerProvider;
 use crate::view::ViewModel;
 
-/// Aspect of the application.
+/// Aspect of the application (screen or page).
 ///
 /// This allows the UI navigation to be reactive: controlled in response to the
 /// user's actions. Although Crux can handle sub-apps, this is the intended way
@@ -291,7 +291,7 @@ impl crux_core::App for App {
                 };
 
                 // Fetch issuer metadata.
-                let Model::Issuance { state, .. } = model else {
+                let State::Issuance(mut state) = model.state.clone() else {
                     return Command::event(Event::Error("unexpected issuance state".into()));
                 };
                 let IssuanceState::Offered { offer, .. } = state.deref_mut() else {
@@ -321,7 +321,6 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                *model = model.active_view(Aspect::IssuanceOffer);
 
                 // Fetch logo and background image.
                 let Some(cred_info) = model.get_offered_credential() else {
@@ -949,22 +948,21 @@ impl crux_core::App for App {
     }
 
     fn view(&self, model: &Self::Model) -> Self::ViewModel {
-        let mut vm = Self::ViewModel::default();
-        match model {
-            Model::Credential { active_view, state } => {
-                vm.active_view = active_view.clone();
+        let mut vm = Self::ViewModel {
+            active_view: model.active_view.clone(),
+            ..Default::default()
+        };
+        match &model.state {
+            State::Credential(state) => {
                 vm.credential_view = state.deref().clone().into();
             }
-            Model::Issuance { active_view, state } => {
-                vm.active_view = active_view.clone();
+            State::Issuance(state) => {
                 vm.issuance_view = state.deref().clone().into();
             }
-            Model::Presentation { active_view, state } => {
-                vm.active_view = active_view.clone();
+            State::Presentation(state) => {
                 vm.presentation_view = state.deref().clone().into();
             }
-            Model::Error { active_view, error } => {
-                vm.active_view = active_view.clone();
+            State::Error(error) => {
                 vm.error = error.clone();
             }
         }
