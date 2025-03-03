@@ -1,9 +1,11 @@
 //! This module contains the core application fabric for the wallet, including
 //! the model, events, and effects that drive the application.
 
+pub mod credential;
+
 use std::ops::{Deref, DerefMut};
 
-use credibil_holder::Kind;
+use credential::CredentialEvent;
 use credibil_holder::credential::Credential;
 use credibil_holder::did::Document;
 use credibil_holder::infosec::jose::{Jws, JwsBuilder};
@@ -12,14 +14,15 @@ use credibil_holder::issuance::{
     CredentialResponse, CredentialResponseType, Issuer, TokenResponse, VerifiableCredential,
 };
 use credibil_holder::presentation::{
-    self, RequestObject as VerifierRequestObject, RequestObjectResponse, RequestObjectType,
-    parse_request_object_jwt,
+    self, parse_request_object_jwt, RequestObject as VerifierRequestObject, RequestObjectResponse,
+    RequestObjectType,
 };
+use credibil_holder::Kind;
+use crux_core::render::{render, Render};
 use crux_core::Command;
-use crux_core::render::{Render, render};
-use crux_http::HttpError;
 use crux_http::command::Http;
 use crux_http::http::mime;
+use crux_http::HttpError;
 use crux_kv::KeyValue;
 use serde::{Deserialize, Serialize};
 
@@ -77,31 +80,8 @@ pub enum Event {
     #[serde(skip)]
     Error(String),
 
-    //--- Credential events ----------------------------------------------------
-    /// Event emitted by the shell when the app first loads.
-    Ready,
-
-    /// Event emitted by the shell to select a credential from the list of
-    /// stored credentials for detailed display.
-    SelectCredential(String),
-
-    /// Event emitted by the shell to delete a credential from the wallet.
-    DeleteCredential(String),
-
-    /// Event emitted by the core when the store capability has loaded
-    /// credentials.
-    #[serde(skip)]
-    CredentialsLoaded(Result<Vec<StoreEntry>, StoreError>),
-
-    /// Event emitted by the core when the store capability has stored a
-    /// credential.
-    #[serde(skip)]
-    CredentialStored(Result<(), StoreError>),
-
-    /// Event emitted by the core when the store capability has deleted a
-    /// credential.
-    #[serde(skip)]
-    CredentialDeleted(Result<(), StoreError>),
+    /// Credential events.
+    Credential(CredentialEvent),
 
     //--- Issuance events ------------------------------------------------------
     /// Event emitted by the shell when the user wants to scan an issuance offer
@@ -257,25 +237,28 @@ impl crux_core::App for App {
                 *model = model.error(&e);
                 render()
             }
-            Event::Ready | Event::CancelIssuance | Event::CancelPresentation => {
+            Event::Credential(CredentialEvent::Ready)
+            | Event::CancelIssuance
+            | Event::CancelPresentation => {
                 *model = model.ready();
                 StoreCommand::list(Catalog::Credential.to_string())
-                    .then_send(Event::CredentialsLoaded)
+                    .then_send(|res| Event::Credential(CredentialEvent::Loaded(res)))
             }
-            Event::SelectCredential(id) => {
+            Event::Credential(CredentialEvent::Select(id)) => {
                 *model = model.select_credential(&id);
                 render()
             }
-            Event::DeleteCredential(id) => {
-                StoreCommand::delete("credential", id).then_send(Event::CredentialDeleted)
+            Event::Credential(CredentialEvent::Delete(id)) => {
+                StoreCommand::delete("credential", id)
+                    .then_send(|res| Event::Credential(CredentialEvent::Deleted(res)))
             }
-            Event::CredentialsLoaded(Ok(entries)) => {
+            Event::Credential(CredentialEvent::Loaded(Ok(entries))) => {
                 *model = model.credentials_loaded(entries);
                 render()
             }
-            Event::CredentialStored(Ok(())) | Event::CredentialDeleted(Ok(())) => {
+            Event::Credential(CredentialEvent::Stored(Ok(()))) | Event::Credential(CredentialEvent::Deleted(Ok(()))) => {
                 StoreCommand::list(Catalog::Credential.to_string())
-                    .then_send(Event::CredentialsLoaded)
+                    .then_send(|res| Event::Credential(CredentialEvent::Loaded(res)))
             }
             Event::ScanIssuanceOffer => {
                 *model = model.scan_issuance_offer();
@@ -685,7 +668,7 @@ impl crux_core::App for App {
                 .then_send(Event::IssuanceStored)
             }
             Event::IssuanceStored(Ok(())) => StoreCommand::list(Catalog::Credential.to_string())
-                .then_send(Event::CredentialsLoaded),
+                .then_send(|res| Event::Credential(CredentialEvent::Loaded(res))),
             Event::ScanPresentationRequest => {
                 *model = model.scan_presentation_request();
                 render()
@@ -918,9 +901,9 @@ impl crux_core::App for App {
                 render()
             }
             // Store errors
-            Event::CredentialsLoaded(Err(error))
-            | Event::CredentialStored(Err(error))
-            | Event::CredentialDeleted(Err(error))
+            Event::Credential(CredentialEvent::Loaded(Err(error)))
+            | Event::Credential(CredentialEvent::Stored(Err(error)))
+            | Event::Credential(CredentialEvent::Deleted(Err(error)))
             | Event::IssuanceStored(Err(error))
             | Event::PresentationCredentialsLoaded(Err(error)) => {
                 *model = model.error(&error.to_string());
