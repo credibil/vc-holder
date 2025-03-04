@@ -2,6 +2,8 @@
 //! the model, events, and effects that drive the application.
 
 pub mod credential;
+pub mod issuance;
+pub mod presentation;
 
 use std::ops::{Deref, DerefMut};
 
@@ -11,24 +13,24 @@ use credibil_holder::did::Document;
 use credibil_holder::infosec::jose::{Jws, JwsBuilder};
 use credibil_holder::issuance::proof::{self, Payload, Type, Verify};
 use credibil_holder::issuance::{
-    CredentialResponse, CredentialResponseType, Issuer, TokenResponse, VerifiableCredential,
+    CredentialResponse, CredentialResponseType, Issuer, TokenResponse,
 };
 use credibil_holder::presentation::{
-    self, parse_request_object_jwt, RequestObject as VerifierRequestObject, RequestObjectResponse,
-    RequestObjectType,
+    parse_request_object_jwt, RequestObjectResponse, RequestObjectType,
 };
 use credibil_holder::Kind;
 use crux_core::render::{render, Render};
 use crux_core::Command;
 use crux_http::command::Http;
 use crux_http::http::mime;
-use crux_http::HttpError;
 use crux_kv::KeyValue;
+use issuance::IssuanceEvent;
+use presentation::PresentationEvent;
 use serde::{Deserialize, Serialize};
 
-use crate::capabilities::key::{KeyStore, KeyStoreCommand, KeyStoreEntry, KeyStoreError};
+use crate::capabilities::key::{KeyStore, KeyStoreCommand};
 use crate::capabilities::sse::ServerSentEvents;
-use crate::capabilities::store::{Catalog, Store, StoreCommand, StoreEntry, StoreError};
+use crate::capabilities::store::{Catalog, Store, StoreCommand, StoreEntry};
 use crate::did_resolver::DidResolverProvider;
 use crate::model::{IssuanceState, Model, State};
 use crate::signer::SignerProvider;
@@ -83,128 +85,11 @@ pub enum Event {
     /// Credential events.
     Credential(CredentialEvent),
 
-    //--- Issuance events ------------------------------------------------------
-    /// Event emitted by the shell when the user wants to scan an issuance offer
-    /// QR code.
-    ScanIssuanceOffer,
+    /// Issuance events.
+    Issuance(IssuanceEvent),
 
-    /// Event emitted by the shell when the user scans an offer QR code.
-    IssuanceOffer(String),
-
-    /// Event emitted by the core when issuer metadata has been received.
-    #[serde(skip)]
-    IssuanceIssuer(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when an offered credential's logo has been
-    /// fetched.
-    #[serde(skip)]
-    IssuanceLogo(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when an offered credential's background image
-    /// has been fetched.
-    #[serde(skip)]
-    IssuanceBackground(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the shell when the user has accepted an issuance offer.
-    IssuanceAccepted,
-
-    /// Event emitted by the shell when the user has entered a PIN.
-    IssuancePin(String),
-
-    /// Event emitted by the core when an access token has been received.
-    #[serde(skip)]
-    IssuanceToken(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when a proof has been created.
-    #[serde(skip)]
-    IssuanceProof(String),
-
-    /// Event emitted by the core when a DID document has been resolved.
-    #[serde(skip)]
-    IssuanceDidResolve(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when a signing key has been retrieved from
-    /// the key store capability.
-    #[serde(skip)]
-    IssuanceSigningKey(Result<KeyStoreEntry, KeyStoreError>),
-
-    /// Event emitted by the core when a credential has been received.
-    #[serde(skip)]
-    IssuanceCredential(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when a credential response proof has been
-    /// verified.
-    #[serde(skip)]
-    IssuanceProofVerified { vc: VerifiableCredential, issued_at: i64 },
-
-    /// Event emitted by the core when a credential has been stored.
-    #[serde(skip)]
-    IssuanceStored(Result<(), StoreError>),
-
-    /// Event emitted by the shell to cancel an issuance.
-    CancelIssuance,
-
-    //--- Presentation events --------------------------------------------------
-    /// Event emitted by the shell when the user wants to scan a presentation
-    /// request QR code.
-    ScanPresentationRequest,
-
-    /// Event emitted by the shell when the user scans a presentation request QR
-    /// code.
-    ///
-    /// We expect the string to be a URL to a presentation request. Cross-device
-    /// flow.
-    PresentationRequest(String),
-
-    /// Event emitted by the core when a presentation request has been received.
-    #[serde(skip)]
-    PresentationRequestReceived(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when a DID document has been resolved.
-    #[serde(skip)]
-    PresentationDidResolve(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the core when the presentation request has been
-    /// verified and decoded.
-    #[serde(skip)]
-    PresentationRequestVerified(Box<VerifierRequestObject>),
-
-    /// Event emitted by the core when all credentials have been loaded from
-    /// storage, before they are filtered.
-    #[serde(skip)]
-    PresentationCredentialsLoaded(Result<Vec<StoreEntry>, StoreError>),
-
-    /// Event emitted by the core when at least one credential has been found
-    /// that matches the presentation request.
-    #[serde(skip)]
-    PresentationCredentialsFound(Vec<Credential>),
-
-    /// Event emitted by the shell when a user approves the presentation of
-    /// the credential to the verifier.
-    ///
-    /// TODO: We only let the user send the first matching credential for now.
-    /// If the app extends to support a choice we would need to know which one
-    /// has been selected here.
-    PresentationApproved,
-
-    /// Event emitted by the core when a signing key has been retrieved from
-    /// the key store capability.
-    #[serde(skip)]
-    PresentationSigningKey(Result<KeyStoreEntry, KeyStoreError>),
-
-    /// Event emitted by the core when a proof has been constructed.
-    ///
-    /// The string is a proof JWT.
-    #[serde(skip)]
-    PresentationProof(String),
-
-    /// Event emitted by the core when the verifier responds to the
-    /// presentation.
-    #[serde(skip)]
-    PresentationResponse(Result<crux_http::Response<Vec<u8>>, HttpError>),
-
-    /// Event emitted by the shell when the user wants to cancel a presentation.
-    CancelPresentation,
+    // Presentation events.
+    Presentation(PresentationEvent),
 }
 
 /// Set of capabilities available to the application.
@@ -238,8 +123,8 @@ impl crux_core::App for App {
                 render()
             }
             Event::Credential(CredentialEvent::Ready)
-            | Event::CancelIssuance
-            | Event::CancelPresentation => {
+            | Event::Issuance(IssuanceEvent::Cancel)
+            | Event::Presentation(PresentationEvent::Cancel) => {
                 *model = model.ready();
                 StoreCommand::list(Catalog::Credential.to_string())
                     .then_send(|res| Event::Credential(CredentialEvent::Loaded(res)))
@@ -256,15 +141,16 @@ impl crux_core::App for App {
                 *model = model.credentials_loaded(entries);
                 render()
             }
-            Event::Credential(CredentialEvent::Stored(Ok(()))) | Event::Credential(CredentialEvent::Deleted(Ok(()))) => {
+            Event::Credential(CredentialEvent::Stored(Ok(())))
+            | Event::Credential(CredentialEvent::Deleted(Ok(()))) => {
                 StoreCommand::list(Catalog::Credential.to_string())
                     .then_send(|res| Event::Credential(CredentialEvent::Loaded(res)))
             }
-            Event::ScanIssuanceOffer => {
+            Event::Issuance(IssuanceEvent::ScanOffer) => {
                 *model = model.scan_issuance_offer();
                 render()
             }
-            Event::IssuanceOffer(encoded_offer) => {
+            Event::Issuance(IssuanceEvent::Offer(encoded_offer)) => {
                 // We have an encoded offer. Parse it and set issuance state.
                 *model = match model.issuance_offer(&encoded_offer) {
                     Ok(m) => m,
@@ -282,9 +168,11 @@ impl crux_core::App for App {
                 };
                 let issuer_url =
                     format!("{}/.well-known/openid-credential-issuer", offer.credential_issuer);
-                Http::get(issuer_url).build().then_send(Event::IssuanceIssuer)
+                Http::get(issuer_url)
+                    .build()
+                    .then_send(|res| Event::Issuance(IssuanceEvent::Issuer(res)))
             }
-            Event::IssuanceIssuer(Ok(res)) => {
+            Event::Issuance(IssuanceEvent::Issuer(Ok(res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error("issuer metadata fetch failed".into()));
                 }
@@ -316,19 +204,19 @@ impl crux_core::App for App {
                     Some(logo_url) => Http::get(logo_url)
                         .header("accept", "image/*")
                         .build()
-                        .then_send(Event::IssuanceLogo),
+                        .then_send(|res| Event::Issuance(IssuanceEvent::Logo(res))),
                     None => Command::done(),
                 };
                 let background_command: Command<Effect, Event> = match cred_info.background_url() {
                     Some(background_url) => Http::get(background_url)
                         .header("accept", "image/*")
                         .build()
-                        .then_send(Event::IssuanceBackground),
+                        .then_send(|res| Event::Issuance(IssuanceEvent::Background(res))),
                     None => Command::done(),
                 };
                 Command::all([logo_command, background_command, render()])
             }
-            Event::IssuanceLogo(Ok(mut res)) => {
+            Event::Issuance(IssuanceEvent::Logo(Ok(mut res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error("credential logo fetch failed".into()));
                 }
@@ -347,7 +235,7 @@ impl crux_core::App for App {
                 };
                 render()
             }
-            Event::IssuanceBackground(Ok(mut res)) => {
+            Event::Issuance(IssuanceEvent::Background(Ok(mut res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error(
                         "credential background image fetch failed".into(),
@@ -370,7 +258,7 @@ impl crux_core::App for App {
                 };
                 render()
             }
-            Event::IssuanceAccepted => {
+            Event::Issuance(IssuanceEvent::Accepted) => {
                 *model = match model.issuance_accept() {
                     Ok(m) => m,
                     Err(e) => {
@@ -409,9 +297,9 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                http_request.build().then_send(Event::IssuanceToken)
+                http_request.build().then_send(|res| Event::Issuance(IssuanceEvent::Token(res)))
             }
-            Event::IssuancePin(pin) => {
+            Event::Issuance(IssuanceEvent::Pin(pin)) => {
                 // Set the PIN then just raise an accepted event again to
                 // trigger the next steps.
                 *model = match model.issuance_pin(&pin) {
@@ -420,9 +308,9 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                Command::event(Event::IssuanceAccepted)
+                Command::event(Event::Issuance(IssuanceEvent::Accepted))
             }
-            Event::IssuanceToken(Ok(res)) => {
+            Event::Issuance(IssuanceEvent::Token(Ok(res))) => {
                 // Set the token on state.
                 if !res.status().is_success() {
                     return Command::event(Event::Error("access token request failed".into()));
@@ -443,9 +331,10 @@ impl crux_core::App for App {
                 };
 
                 // Get a signing key.
-                KeyStoreCommand::get("credential", "signing").then_send(Event::IssuanceSigningKey)
+                KeyStoreCommand::get("credential", "signing")
+                    .then_send(|res| Event::Issuance(IssuanceEvent::SigningKey(res)))
             }
-            Event::IssuanceSigningKey(Ok(key)) => {
+            Event::Issuance(IssuanceEvent::SigningKey(Ok(key))) => {
                 // Get proof claims
                 let bytes: Vec<u8> = key.into();
                 let signer = match SignerProvider::new(&bytes) {
@@ -470,7 +359,7 @@ impl crux_core::App for App {
                         .await
                     {
                         if let Ok(compact_jws) = jws.encode() {
-                            ctx.send_event(Event::IssuanceProof(compact_jws))
+                            ctx.send_event(Event::Issuance(IssuanceEvent::Proof(compact_jws)))
                         } else {
                             ctx.send_event(Event::Error("unable to encode proof".into()))
                         }
@@ -479,7 +368,7 @@ impl crux_core::App for App {
                     }
                 })
             }
-            Event::IssuanceProof(jws) => {
+            Event::Issuance(IssuanceEvent::Proof(jws)) => {
                 *model = match model.issuance_proof(&jws) {
                     Ok(m) => m,
                     Err(e) => {
@@ -514,9 +403,11 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                http_request.build().then_send(Event::IssuanceCredential)
+                http_request
+                    .build()
+                    .then_send(|res| Event::Issuance(IssuanceEvent::Credential(res)))
             }
-            Event::IssuanceCredential(Ok(res)) => {
+            Event::Issuance(IssuanceEvent::Credential(Ok(res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error("credential request failed".into()));
                 }
@@ -581,7 +472,9 @@ impl crux_core::App for App {
                                 return Command::event(Event::Error(e.to_string()));
                             }
                         };
-                        Http::get(url).build().then_send(Event::IssuanceDidResolve)
+                        Http::get(url)
+                            .build()
+                            .then_send(|res| Event::Issuance(IssuanceEvent::DidResolved(res)))
                     }
                     CredentialResponseType::Credentials(_creds) =>
                     // Multiple credentials in response.
@@ -601,7 +494,7 @@ impl crux_core::App for App {
                     }
                 }
             }
-            Event::IssuanceDidResolve(Ok(res)) => {
+            Event::Issuance(IssuanceEvent::DidResolved(Ok(res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error("DID document request failed".into()));
                 }
@@ -637,7 +530,10 @@ impl crux_core::App for App {
                                     "unable to verify credential".into(),
                                 ));
                             };
-                            ctx.send_event(Event::IssuanceProofVerified { vc, issued_at })
+                            ctx.send_event(Event::Issuance(IssuanceEvent::ProofVerified {
+                                vc,
+                                issued_at,
+                            }))
                         })
                     }
                     _ => Command::event(Event::Error(
@@ -645,7 +541,7 @@ impl crux_core::App for App {
                     )),
                 }
             }
-            Event::IssuanceProofVerified { vc, issued_at } => {
+            Event::Issuance(IssuanceEvent::ProofVerified { vc, issued_at }) => {
                 // Update the model with issued credential information.
                 *model = match model.issuance_add_credential(&vc, &issued_at) {
                     Ok(m) => m,
@@ -665,20 +561,24 @@ impl crux_core::App for App {
                     credential.id.clone(),
                     credential,
                 )
-                .then_send(Event::IssuanceStored)
+                .then_send(|res| Event::Issuance(IssuanceEvent::Stored(res)))
             }
-            Event::IssuanceStored(Ok(())) => StoreCommand::list(Catalog::Credential.to_string())
-                .then_send(|res| Event::Credential(CredentialEvent::Loaded(res))),
-            Event::ScanPresentationRequest => {
+            Event::Issuance(IssuanceEvent::Stored(Ok(()))) => {
+                StoreCommand::list(Catalog::Credential.to_string())
+                    .then_send(|res| Event::Credential(CredentialEvent::Loaded(res)))
+            }
+            Event::Presentation(PresentationEvent::ScanRequest) => {
                 *model = model.scan_presentation_request();
                 render()
             }
-            Event::PresentationRequest(url) => {
+            Event::Presentation(PresentationEvent::Request(url)) => {
                 println!(">>> Presentation request URL: {url}");
                 // Fetch the presentation request from the verifier's service.
-                Http::get(url).build().then_send(Event::PresentationRequestReceived)
+                Http::get(url)
+                    .build()
+                    .then_send(|res| Event::Presentation(PresentationEvent::RequestReceived(res)))
             }
-            Event::PresentationRequestReceived(Ok(res)) => {
+            Event::Presentation(PresentationEvent::RequestReceived(Ok(res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error(
                         "presentation request fetch failed".into(),
@@ -737,9 +637,11 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                Http::get(url).build().then_send(Event::PresentationDidResolve)
+                Http::get(url)
+                    .build()
+                    .then_send(|res| Event::Presentation(PresentationEvent::DidResolved(res)))
             }
-            Event::PresentationDidResolve(Ok(res)) => {
+            Event::Presentation(PresentationEvent::DidResolved(Ok(res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error("DID document request failed".into()));
                 }
@@ -766,10 +668,12 @@ impl crux_core::App for App {
                                 return ctx.send_event(Event::Error(e.to_string()));
                             }
                         };
-                    ctx.send_event(Event::PresentationRequestVerified(Box::new(req_obj)));
+                    ctx.send_event(Event::Presentation(PresentationEvent::RequestVerified(
+                        Box::new(req_obj),
+                    )));
                 })
             }
-            Event::PresentationRequestVerified(req) => {
+            Event::Presentation(PresentationEvent::RequestVerified(req)) => {
                 *model = match model.presentation_request_verified(&req) {
                     Ok(m) => m,
                     Err(e) => {
@@ -778,9 +682,9 @@ impl crux_core::App for App {
                 };
                 // Load credentials from storage.
                 StoreCommand::list(Catalog::Credential.to_string())
-                    .then_send(Event::PresentationCredentialsLoaded)
+                    .then_send(|res| Event::Presentation(PresentationEvent::CredentialsLoaded(res)))
             }
-            Event::PresentationCredentialsLoaded(Ok(entries)) => {
+            Event::Presentation(PresentationEvent::CredentialsLoaded(Ok(entries))) => {
                 // Find credentials that match the request.
                 let filter = match model.get_presentation_filter() {
                     Ok(f) => f,
@@ -802,9 +706,11 @@ impl crux_core::App for App {
                         }
                     }
                 }
-                Command::event(Event::PresentationCredentialsFound(credentials))
+                Command::event(Event::Presentation(PresentationEvent::CredentialsFound(
+                    credentials,
+                )))
             }
-            Event::PresentationCredentialsFound(creds) => {
+            Event::Presentation(PresentationEvent::CredentialsFound(creds)) => {
                 if creds.is_empty() {
                     return Command::event(Event::Error("No matching credentials found".into()));
                 }
@@ -817,7 +723,7 @@ impl crux_core::App for App {
                 };
                 render()
             }
-            Event::PresentationApproved => {
+            Event::Presentation(PresentationEvent::Approved) => {
                 // Authorize the presentation.
                 *model = match model.presentation_approve() {
                     Ok(m) => m,
@@ -827,9 +733,9 @@ impl crux_core::App for App {
                 };
                 // Get a signing key.
                 KeyStoreCommand::get("credential", "signing")
-                    .then_send(Event::PresentationSigningKey)
+                    .then_send(|res| Event::Presentation(PresentationEvent::SigningKey(res)))
             }
-            Event::PresentationSigningKey(Ok(key)) => {
+            Event::Presentation(PresentationEvent::SigningKey(Ok(key))) => {
                 let bytes: Vec<u8> = key.into();
                 let signer = match SignerProvider::new(&bytes) {
                     Ok(s) => s,
@@ -853,19 +759,21 @@ impl crux_core::App for App {
                     return Command::event(Event::Error("expected presentation payload".into()));
                 };
                 Command::new(|ctx| async move {
-                    match presentation::proof::create(
-                        presentation::proof::W3cFormat::JwtVcJson,
+                    match credibil_holder::presentation::proof::create(
+                        credibil_holder::presentation::proof::W3cFormat::JwtVcJson,
                         Payload::Vp { vp, client_id, nonce },
                         &signer,
                     )
                     .await
                     {
-                        Ok(jws) => ctx.send_event(Event::PresentationProof(jws)),
+                        Ok(jws) => {
+                            ctx.send_event(Event::Presentation(PresentationEvent::Proof(jws)))
+                        }
                         Err(e) => ctx.send_event(Event::Error(e.to_string())),
                     }
                 })
             }
-            Event::PresentationProof(jws) => {
+            Event::Presentation(PresentationEvent::Proof(jws)) => {
                 let (res_req, uri) = match model.create_response_request(&jws) {
                     Ok(rr) => rr,
                     Err(e) => {
@@ -891,9 +799,11 @@ impl crux_core::App for App {
                         return Command::event(Event::Error(e.to_string()));
                     }
                 };
-                http_request.build().then_send(Event::PresentationResponse)
+                http_request
+                    .build()
+                    .then_send(|res| Event::Presentation(PresentationEvent::Response(res)))
             }
-            Event::PresentationResponse(Ok(res)) => {
+            Event::Presentation(PresentationEvent::Response(Ok(res))) => {
                 if !res.status().is_success() {
                     return Command::event(Event::Error("credential verification failed".into()));
                 }
@@ -904,26 +814,27 @@ impl crux_core::App for App {
             Event::Credential(CredentialEvent::Loaded(Err(error)))
             | Event::Credential(CredentialEvent::Stored(Err(error)))
             | Event::Credential(CredentialEvent::Deleted(Err(error)))
-            | Event::IssuanceStored(Err(error))
-            | Event::PresentationCredentialsLoaded(Err(error)) => {
+            | Event::Issuance(IssuanceEvent::Stored(Err(error)))
+            | Event::Presentation(PresentationEvent::CredentialsLoaded(Err(error))) => {
                 *model = model.error(&error.to_string());
                 render()
             }
             // HTTP errors
-            Event::IssuanceIssuer(Err(error))
-            | Event::IssuanceLogo(Err(error))
-            | Event::IssuanceBackground(Err(error))
-            | Event::IssuanceToken(Err(error))
-            | Event::IssuanceCredential(Err(error))
-            | Event::IssuanceDidResolve(Err(error))
-            | Event::PresentationRequestReceived(Err(error))
-            | Event::PresentationResponse(Err(error))
-            | Event::PresentationDidResolve(Err(error)) => {
+            Event::Issuance(IssuanceEvent::Issuer(Err(error)))
+            | Event::Issuance(IssuanceEvent::Logo(Err(error)))
+            | Event::Issuance(IssuanceEvent::Background(Err(error)))
+            | Event::Issuance(IssuanceEvent::Token(Err(error)))
+            | Event::Issuance(IssuanceEvent::Credential(Err(error)))
+            | Event::Issuance(IssuanceEvent::DidResolved(Err(error)))
+            | Event::Presentation(PresentationEvent::RequestReceived(Err(error)))
+            | Event::Presentation(PresentationEvent::Response(Err(error)))
+            | Event::Presentation(PresentationEvent::DidResolved(Err(error))) => {
                 *model = model.error(&error.to_string());
                 render()
             }
             // Key store errors
-            Event::IssuanceSigningKey(Err(error)) | Event::PresentationSigningKey(Err(error)) => {
+            Event::Issuance(IssuanceEvent::SigningKey(Err(error)))
+            | Event::Presentation(PresentationEvent::SigningKey(Err(error))) => {
                 *model = model.error(&error.to_string());
                 render()
             }

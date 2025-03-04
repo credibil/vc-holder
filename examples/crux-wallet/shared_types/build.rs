@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use crux_core::typegen::TypeGen;
 use crux_http::HttpError;
-use wallet::{app::credential::CredentialEvent, App, Aspect};
+use wallet::{app::credential::CredentialEvent, issuance::IssuanceEvent, presentation::PresentationEvent, App, Aspect};
 
 fn main() -> anyhow::Result<()> {
     println!("cargo:rerun-if-changed=../shared");
@@ -18,6 +18,8 @@ fn main() -> anyhow::Result<()> {
     // Register other types the code generator is having trouble inferring
     gen.register_type::<Aspect>()?;
     gen.register_type::<CredentialEvent>()?;
+    gen.register_type::<IssuanceEvent>()?;
+    gen.register_type::<PresentationEvent>()?;
 
     gen.swift("SharedTypes", out_dir.join("swift"))?;
     gen.java("io.credibil.wallet.shared_types", out_dir.join("java"))?;

@@ -33,12 +33,12 @@ struct PresentationRequest: View {
                 Spacer()
                 HStack {
                     Button("Cancel") {
-                        update(.cancelPresentation)
+                        update(Event.presentation(PresentationEvent.cancel))
                     }
                     Spacer()
                     Button("Send") {
                         waiting = true
-                        update(.presentationApproved)
+                        update(Event.presentation(PresentationEvent.approved))
                     }
                     .buttonStyle(.borderedProminent)
                 }
