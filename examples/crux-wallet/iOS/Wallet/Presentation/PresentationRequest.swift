@@ -26,19 +26,19 @@ struct PresentationRequest: View {
                         CredentialCard(credential: credentials[index])
                             .stacked(at: credentials.count - index, in: credentials.count)
                             .onTapGesture {
-                                update(.selectCredential(credentials[index].id))
+                                update(Event.credential(CredentialEvent.select(credentials[index].id)))
                             }
                     }
                 }
                 Spacer()
                 HStack {
                     Button("Cancel") {
-                        update(.cancelPresentation)
+                        update(Event.presentation(PresentationEvent.cancel))
                     }
                     Spacer()
                     Button("Send") {
                         waiting = true
-                        update(.presentationApproved)
+                        update(Event.presentation(PresentationEvent.approved))
                     }
                     .buttonStyle(.borderedProminent)
                 }

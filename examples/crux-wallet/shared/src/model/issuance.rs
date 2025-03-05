@@ -1,11 +1,16 @@
 //! Issuance sub-app state.
 use anyhow::bail;
-use credibil_holder::credential::ImageData;
+use base64ct::{Base64, Encoding};
+use credibil_holder::credential::{Credential, ImageData};
 use credibil_holder::issuance::{
-    Accepted, CredentialConfiguration, CredentialOffer, CredentialResponse, IssuanceFlow, Issuer,
-    NotAccepted, PreAuthorized, PreAuthorizedCodeGrant, WithOffer, WithToken, WithoutToken,
+    Accepted, CredentialConfiguration, CredentialOffer, CredentialResponse, CredentialResponseType,
+    IssuanceFlow, Issuer, NotAccepted, PreAuthorized, PreAuthorizedCodeGrant, ProofClaims,
+    VerifiableCredential, WithOffer, WithToken, WithoutToken,
 };
+use credibil_holder::provider::{CredentialRequest, TokenRequest, TokenResponse};
 use credibil_holder::urlencode;
+
+use crate::config;
 
 /// Configuration and image information for an offered credential.
 #[derive(Clone, Debug, Default)]
@@ -150,10 +155,31 @@ impl IssuanceState {
         }
     }
 
-    /// Cancel the issuance process.
-    pub fn cancel(&mut self) -> anyhow::Result<()> {
-        // TODO: Reset state
-        Ok(())
+    /// Update flow based on receiving issuer metadata.
+    pub fn issuer_metadata(&self, issuer: Issuer) -> anyhow::Result<Self> {
+        let Self::Offered { offer, grant } = self else {
+            bail!("unexpected issuance state to apply issuer metadata");
+        };
+        let flow = IssuanceFlow::<WithOffer, PreAuthorized, NotAccepted, WithoutToken>::new(
+            &config::client_id(),
+            &config::subject_id(),
+            issuer.clone(),
+            offer.clone(),
+            grant.clone(),
+        );
+        let mut creds = Vec::<OfferedCredential>::new();
+        for config_id in &offer.credential_configuration_ids {
+            if let Some(config) = issuer.credential_configurations_supported.get(config_id) {
+                creds.push(OfferedCredential {
+                    config_id: config_id.clone(),
+                    config: config.clone(),
+                    logo: None,
+                    background: None,
+                });
+            }
+        }
+        let new_state = Self::IssuerMetadata { flow, offered: creds };
+        Ok(new_state)
     }
 
     /// Get the issuer metadata.
@@ -166,6 +192,247 @@ impl IssuanceState {
             Self::Proof { flow, .. } => Some(flow.issuer().clone()),
             Self::Issued { flow, .. } => Some(flow.issuer().clone()),
         }
+    }
+
+    /// Get the offered credentials.
+    pub fn get_offered_credential(&self) -> Option<OfferedCredential> {
+        match self {
+            Self::IssuerMetadata { offered, .. }
+            | Self::Accepted { offered, .. }
+            | Self::Token { offered, .. }
+            | Self::Proof { offered, .. } => offered.first().cloned(),
+            _ => None,
+        }
+    }
+
+    /// Update the state with credential logo image data.
+    /// TODO: Add support for multiple offered credentials.
+    pub fn logo(&self, image_data: &[u8], media_type: &str) -> anyhow::Result<Self> {
+        let Self::IssuerMetadata { flow, offered } = self else {
+            bail!("unexpected issuance state to apply logo");
+        };
+        if let Some(credential) = offered.clone().first_mut() {
+            credential.logo = Some(ImageData {
+                data: Base64::encode_string(image_data),
+                media_type: media_type.into(),
+            });
+            let new_state = IssuanceState::IssuerMetadata {
+                flow: flow.clone(),
+                offered: vec![credential.clone()],
+            };
+            Ok(new_state)
+        } else {
+            Ok(self.clone())
+        }
+    }
+
+    /// Update the state with credential background image data.
+    /// TODO: Add support for multiple offered credentials.
+    pub fn background(&self, image_data: &[u8], media_type: &str) -> anyhow::Result<Self> {
+        let Self::IssuerMetadata { flow, offered } = self else {
+            bail!("unexpected issuance state to apply logo");
+        };
+        if let Some(credential) = offered.clone().first_mut() {
+            credential.background = Some(ImageData {
+                data: Base64::encode_string(image_data),
+                media_type: media_type.into(),
+            });
+            let new_state = IssuanceState::IssuerMetadata {
+                flow: flow.clone(),
+                offered: vec![credential.clone()],
+            };
+            Ok(new_state)
+        } else {
+            Ok(self.clone())
+        }
+    }
+
+    /// Update the flow state with the user accepting the offer (but not yet
+    /// providing a PIN).
+    pub fn accept(&self) -> anyhow::Result<Self> {
+        if let Self::Accepted { .. } = self {
+            return Ok(self.clone());
+        };
+        let Self::IssuerMetadata { flow, offered } = self else {
+            bail!("unexpected issuance state to accept offer");
+        };
+        let updated_flow = flow.clone().accept(&None, None);
+        let new_state = Self::Accepted {
+            flow: updated_flow,
+            offered: offered.clone(),
+        };
+        Ok(new_state)
+    }
+
+    /// Get a token request from the flow state.
+    pub fn token_request(&self) -> anyhow::Result<TokenRequest> {
+        if let Self::Accepted { flow, .. } = self {
+            Ok(flow.token_request())
+        } else {
+            bail!("unexpected issuance state to get token request");
+        }
+    }
+
+    /// Add a user-entered PIN to flow state.
+    pub fn pin(&self, pin: &str) -> anyhow::Result<Self> {
+        let Self::Accepted { flow, offered } = self else {
+            bail!("unexpected issuance state to add PIN");
+        };
+        let mut updated_flow = flow.clone();
+        updated_flow.set_pin(pin);
+        let new_state = Self::Accepted {
+            flow: updated_flow,
+            offered: offered.clone(),
+        };
+        Ok(new_state)
+    }
+
+    /// Update state with a token response.
+    pub fn token(&self, token: &TokenResponse) -> anyhow::Result<Self> {
+        let Self::Accepted { flow, offered } = self else {
+            bail!("unexpected issuance state to add token");
+        };
+        let updated_flow = flow.clone().token(token.clone());
+        let new_state = Self::Token {
+            flow: updated_flow,
+            offered: offered.clone(),
+        };
+        Ok(new_state)
+    }
+
+    /// Get proof claims from the flow state.
+    pub fn get_proof_claims(&self) -> anyhow::Result<ProofClaims> {
+        let Self::Token { flow, .. } = self else {
+            bail!("unexpected issuance state to get proof claims");
+        };
+        Ok(flow.proof())
+    }
+
+    /// Update state with a proof.
+    /// TODO: Could extend this to review and refresh existing proof if
+    /// proof has expired.
+    pub fn proof(&self, encoded_proof: &str) -> anyhow::Result<Self> {
+        let Self::Token { flow, offered } = self else {
+            bail!("unexpected issuance state to add proof");
+        };
+        let new_state = Self::Proof {
+            flow: flow.clone(),
+            offered: offered.clone(),
+            proof: encoded_proof.into(),
+        };
+        Ok(new_state)
+    }
+
+    /// Get a credential request for the first offered credential.
+    /// TODO: Add support for multiple offered credentials.
+    pub fn get_credential_request(&self, jwt: &str) -> anyhow::Result<(String, CredentialRequest)> {
+        let Self::Proof { flow, .. } = self else {
+            bail!("unexpected issuance state to get authorization details");
+        };
+        let tr = flow.get_token();
+        let Some(authorized) = tr.authorization_details else {
+            bail!("no authorized details in token response");
+        };
+        let Some(auth) = authorized.first() else {
+            bail!("empty authorized details in token response");
+        };
+        let Some(cred_id) = auth.credential_identifiers.first() else {
+            bail!("empty credential identifiers in authorized details");
+        };
+        let identifiers = vec![cred_id.clone()];
+        let requests = flow.credential_requests(&identifiers, jwt);
+        let Some(request) = requests.first() else {
+            bail!("no credential request for first credential identifier");
+        };
+        Ok(request.clone())
+    }
+
+    /// Retrieve the access token from the flow.
+    pub fn get_token(&self) -> anyhow::Result<String> {
+        match self {
+            Self::Token { flow, .. } | Self::Proof { flow, .. } | Self::Issued { flow, .. } => {
+                let token_response = flow.get_token();
+                Ok(token_response.access_token)
+            }
+            _ => bail!("unexpected issuance state to get access token"),
+        }
+    }
+
+    /// Update state with a credential response.
+    pub fn issued(&self, response: &CredentialResponse) -> anyhow::Result<Self> {
+        let Self::Proof { flow, offered, proof } = self else {
+            bail!("unexpected issuance state to add credential response");
+        };
+        let new_state = Self::Issued {
+            flow: flow.clone(),
+            offered: offered.clone(),
+            proof: proof.clone(),
+            issued: response.clone(),
+        };
+        Ok(new_state)
+    }
+
+    /// Get the credential response from the issuance state.
+    pub fn get_issued_credential(&self) -> Option<CredentialResponse> {
+        match self {
+            Self::Issued { issued, .. } => Some(issued.clone()),
+            _ => None,
+        }
+    }
+
+    /// Add the issued credential to issuance flow state. (This is separated
+    /// from `issuance_issued` to allow for async verification of the credential
+    /// response).
+    /// TODO: Add support for different credential formats.
+    pub fn add_credential(
+        &self, vc: &VerifiableCredential, issued_at: &i64,
+    ) -> anyhow::Result<Self> {
+        let Self::Issued {
+            flow,
+            offered,
+            proof,
+            issued,
+        } = self
+        else {
+            bail!("unexpected issuance state to add credential");
+        };
+        let CredentialResponseType::Credential(vc_kind) = &issued.response else {
+            bail!("unexpected credential response type");
+        };
+        let Some(cred) = offered.first() else {
+            bail!("no offered credential to add credential");
+        };
+        let mut updated_flow = flow.clone();
+        updated_flow.add_credential(
+            vc,
+            vc_kind,
+            issued_at,
+            &cred.config_id,
+            cred.logo.clone(),
+            cred.background.clone(),
+        )?;
+
+        let new_state = IssuanceState::Issued {
+            flow: updated_flow,
+            offered: offered.clone(),
+            proof: proof.clone(),
+            issued: issued.clone(),
+        };
+        Ok(new_state)
+    }
+
+    /// Get the credential from the issuance flow that is in a format suitable
+    /// for storage and display in the wallet.
+    /// TODO: Add support for multiple credentials.
+    pub fn get_storable_credential(&self) -> anyhow::Result<Credential> {
+        let Self::Issued { flow, .. } = self else {
+            bail!("unexpected issuance state to get storable credential");
+        };
+        let flow_credentials = flow.credentials();
+        let Some(credential) = flow_credentials.first() else {
+            bail!("no credential in issuance flow");
+        };
+        Ok(credential.clone())
     }
 }
 

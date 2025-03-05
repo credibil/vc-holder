@@ -36,12 +36,12 @@ struct IssuanceOffer: View {
                     Spacer()
                     HStack {
                         Button("Cancel") {
-                            update(.cancelIssuance)
+                            update(Event.issuance(IssuanceEvent.cancel))
                         }
                         Spacer()
                         Button("Accept") {
                             waiting = true
-                            update(.issuanceAccepted)
+                            update(Event.issuance(IssuanceEvent.accepted))
                         }
                         .buttonStyle(.borderedProminent)
                     }

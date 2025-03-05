@@ -5,6 +5,7 @@
 //  Created by Andrew Goldie on 04/02/2025.
 //
 
+import SharedTypes
 import SwiftUI
 import CodeScanner
 
@@ -52,7 +53,7 @@ struct PresentationScan: View {
             self.scanResult = "Request scanned"
             let url = code.string
             debugPrint("Request URL: \(url)")
-            update(.presentationRequest(url))
+            update(Event.presentation(PresentationEvent.request(url)))
             self.requestUrl = url
         case .failure(let error):
             debugPrint(error.localizedDescription)

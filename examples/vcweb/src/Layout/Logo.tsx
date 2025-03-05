@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
-import logo from "./Logo.svg";
+import logo from "./logo.svg";
 import logoInverse from "./LogoInverse.svg";
 import { useAppBarHeight } from "./useAppBarHeight";
 

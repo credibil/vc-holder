@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-import logo from "./FullLogo.svg";
+import logo from "./fulllogo.svg";
 
 const FullLogo = () => {
     return (

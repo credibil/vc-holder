@@ -37,7 +37,7 @@ struct IssuancePin: View {
                     }
                 Button("OK") {
                     waiting = true
-                    update(.issuancePin(pin))
+                    update(Event.issuance(IssuanceEvent.pin(pin)))
                 }
                 .buttonStyle(.borderedProminent)
                 .padding()

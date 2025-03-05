@@ -5,6 +5,7 @@
 //  Created by Andrew Goldie on 21/10/2024.
 //
 
+import SharedTypes
 import SwiftUI
 import CodeScanner
 
@@ -57,7 +58,7 @@ struct IssuanceScan: View {
             }
             let offer = parts[1]
             debugPrint("Offer: \(offer)")
-            update(.issuanceOffer(offer))
+            update(Event.issuance(IssuanceEvent.offer(offer)))
             self.offer = offer
         case .failure(let error):
             debugPrint(error.localizedDescription)
