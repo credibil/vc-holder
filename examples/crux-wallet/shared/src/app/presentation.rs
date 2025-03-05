@@ -148,12 +148,7 @@ fn request_received(res: Response<Vec<u8>>, model: &mut Model) -> Command<Effect
         }
     };
     // Store the payload in state while we deal with the DID.
-    *model = match model.presentation_request(&token) {
-        Ok(m) => m,
-        Err(e) => {
-            return Command::event(Event::Error(e.to_string()));
-        }
-    };
+    *model = model.presentation_request(&token);
     let Some(signature) = jws.signatures.first() else {
         return Command::event(Event::Error(
             "expected at least one signature in presentation request".into(),
@@ -317,7 +312,7 @@ fn signing_key(key: KeyStoreEntry, model: &Model) -> Command<Effect, Event> {
 
 /// Process a `PresentationEvent::Proof` event.
 fn proof(jws: &str, model: &Model) -> Command<Effect, Event> {
-    let (res_req, uri) = match model.create_response_request(&jws) {
+    let (res_req, uri) = match model.create_response_request(jws) {
         Ok(rr) => rr,
         Err(e) => {
             return Command::event(Event::Error(e.to_string()));
